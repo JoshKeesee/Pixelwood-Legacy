@@ -31,7 +31,7 @@ class Cutscene {
 }
 
 var tutorial = [];
-tutorial[0] = new Cutscene("Welcome to Pixelwood, " + players[myId].name + "!", "toScene", {x: 5 * 200 - 400 / 4, y: 0, toScene: 1});
+tutorial[0] = new Cutscene("Welcome to Pixelwood!", "toScene", {x: 5 * 200 - 400 / 4, y: 0, toScene: 1});
 tutorial[1] = new Cutscene("Pixelwood is an online RPG game where you can do lots of things.", "typeWriter");
 tutorial[2] = new Cutscene("Come take a tour of the place!", "typeWriter");
 tutorial[3] = new Cutscene("Here is your house...", "toScene", {x: 2825, y: 800, toScene: 0});
@@ -62,7 +62,6 @@ function nextScene() {
       tutorial[players[myId].cutScene].typeWriter();
     } else if (tutorial[players[myId].cutScene].type.includes("toScene")) {
       tutorial[players[myId].cutScene].toScene();
-      saveGame();
     }
     players[myId].cutScene++;
   } else {
