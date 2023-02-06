@@ -90,6 +90,14 @@ const playerLoop = () => {
               players[myId].inventory[x] = collisions[i].type;
               break;
             }
+            if (x === players[myId].inventory.length - 1) {
+              for (var y = 0; y < players[myId].backpack.length; y++) {
+                if (players[myId].backpack[y] === "") {
+                  players[myId].backpack[y] = collisions[i].type;
+                  break;
+                }
+              }
+            }
           }
         }
         socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
@@ -283,6 +291,7 @@ function toggleBackpack() {
   allowedToMove = !allowedToMove;
   usingUtility = !usingUtility;
   $(".backpack").slideToggle(200);
+  saveGame();
 }
 
 function selectItemFromChest(item) {

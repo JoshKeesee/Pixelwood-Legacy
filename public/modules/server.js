@@ -21,9 +21,19 @@ socket.on("currentPlayers", (data) => {
 
   for (var i = 0; i < chestItems.length; i++) {
     if (chestItems[i] !== "") {
-      document.querySelectorAll(".item")[i].innerHTML = "<img id='" + chestItems[i] + "' src='" + items[chestItems[i]].src + "'>";
+      document.querySelectorAll(".chest .item")[i].innerHTML = "<img id='" + chestItems[i] + "' src='" + items[chestItems[i]].src + "'>";
     } else {
       document.querySelectorAll(".item")[i].innerHTML = "";
+    }
+  }
+
+  alert(players[myId].backpack);
+
+  for (var i = 0; i < players[myId].backpack.length; i++) {
+    if (players[myId].backpack[i] !== "") {
+      document.querySelectorAll(".backpack .item")[i].innerHTML = "<img id='" + players[myId].backpack[i] + "' src='" + items[players[myId].backpack[i]].src + "'>";
+    } else {
+      document.querySelectorAll(".backpack .item")[i].innerHTML = "";
     }
   }
 

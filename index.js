@@ -80,17 +80,17 @@ io.on("connection", (socket) => {
 	};
 
 	// instead of doing this because sb could tamper request use socket.user.id to get id of authed user
-	socket.on("playerData", async (id) => {
-		if (!id) return;
+	socket.on("playerData", async () => {
+		if (!socket.user.id) return;
 		const keys = await db.list();
-		if (keys.includes(id)) {
-			let player = await db.get(id);
+		if (keys.includes(socket.user.id)) {
+			let player = await db.get(socket.user.id);
 			player = JSON.parse(player);
-			player.dbId = id;
+			player.dbId = socket.user.id;
 			socket.emit("playerData", player);
 		} else if (players[socket.id]) {
-			players[socket.id].dbId = id;
-			await db.set(id, JSON.stringify(players[socket.id]));
+			players[socket.id].dbId = socket.user.id;
+			await db.set(socket.user.id, JSON.stringify(players[socket.id]));
 			socket.emit("playerData", players[socket.id]);
 		}
 	});
