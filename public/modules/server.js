@@ -27,16 +27,6 @@ socket.on("currentPlayers", (data) => {
     }
   }
 
-  alert(players[myId].backpack);
-
-  for (var i = 0; i < players[myId].backpack.length; i++) {
-    if (players[myId].backpack[i] !== "") {
-      document.querySelectorAll(".backpack .item")[i].innerHTML = "<img id='" + players[myId].backpack[i] + "' src='" + items[players[myId].backpack[i]].src + "'>";
-    } else {
-      document.querySelectorAll(".backpack .item")[i].innerHTML = "";
-    }
-  }
-
   socket.emit("playerMovement", players[socket.id]);
 
   if (user) {
@@ -122,6 +112,13 @@ socket.on("playerData", (player) => {
   if (scenes[players[myId].scene].type === "cave") {
     players[myId].x = 0;
     players[myId].y = 0;
+  }
+  for (var i = 0; i < players[myId].backpack.length; i++) {
+    if (players[myId].backpack[i] !== "") {
+      document.querySelectorAll(".backpack .item")[i].innerHTML = "<img id='" + players[myId].backpack[i] + "' src='" + items[players[myId].backpack[i]].src + "'>";
+    } else {
+      document.querySelectorAll(".backpack .item")[i].innerHTML = "";
+    }
   }
   saveGame();
   gameSave = setInterval(saveGame, 30000);
