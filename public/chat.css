@@ -1,0 +1,73 @@
+#chat {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 8px;
+  border-bottom-right-radius: 10px;
+  background: black;
+  cursor: pointer;
+}
+
+#chat svg {
+  width: 30px;
+  height: 30px;
+}
+
+#notification div {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  border-radius: 50%;
+  background: red;
+  width: 10px;
+  height: 10px;
+}
+
+#ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+#chatWindow {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 60px;
+  left: -100%;
+  bottom: 100px;
+  width: 250px;
+  overflow: hidden;
+  background: black;
+  color: white;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition: 200ms;
+}
+
+#messages {
+  overflow-y: scroll;
+}
+
+#messages div {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 2px 5px;
+  font-family: arial;
+}
+
+#input {
+  margin-top: auto;
+  padding: 10px;
+  border: none;
+  border-top: indigo 2px solid;
+}
+
+#input:focus {
+  outline: none;
+}

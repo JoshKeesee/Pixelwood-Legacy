@@ -1,0 +1,19 @@
+{
+  "name": "Pixelwood",
+  "short_name": "Pixelwood",
+  "description": "An Online RPG Game",
+  "icons": [
+    {
+      "src": "./images/pixelwood-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "scope": "/",
+  "start_url": "/",
+  "display": "fullscreen",
+  "theme_color": "indigo",
+  "background_color": "black",
+  "prefer_related_applications": false
+}
