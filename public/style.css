@@ -525,7 +525,7 @@ progress {
   left: 0;
   right: 0;
   background: darkorange;
-  border-top: black solid 5px;
+  border-top: black solid 2px;
   z-index: 1;
 }
 
@@ -533,6 +533,15 @@ progress {
   position: absolute;
   bottom: 10px;
   right: 10px;
+}
+
+.scene .skip {
+  position: absolute;
+  top: -50px;
+  right: 10px;
+  padding: 2px 2px;
+  background: darkorange;
+  border: black solid 2px;
 }
 
 @font-face {
