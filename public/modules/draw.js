@@ -219,7 +219,7 @@ function animate() {
           y: object.y,
           w: 200,
           h: 200,
-          id: i,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "emerald",
         }
@@ -232,7 +232,7 @@ function animate() {
           y: object.y,
           w: 200,
           h: 200,
-          id: i,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "ruby",
         }
@@ -245,7 +245,7 @@ function animate() {
           y: object.y,
           w: 200,
           h: 200,
-          id: i,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "diamond",
         }
@@ -258,7 +258,7 @@ function animate() {
           y: object.y,
           w: 200,
           h: 200,
-          id: i,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "gold",
         }
@@ -271,7 +271,7 @@ function animate() {
           y: object.y,
           w: 200,
           h: 200,
-          id: i,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "iron",
         }

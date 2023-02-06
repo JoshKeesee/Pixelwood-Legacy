@@ -28,11 +28,11 @@ const scenes = [
     num: 60,
   },
   {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     type: "cave",
     scenery: [],
-    num: 150,
+    num: 200,
   },
   {
     width: 6,

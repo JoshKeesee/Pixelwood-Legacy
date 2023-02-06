@@ -102,9 +102,7 @@ const playerLoop = () => {
         }
         socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
       } else if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") && !scenes[players[myId].scene].scenery[collisions[i].id].mined) {
-        if (scenes[players[myId].scene].scenery[collisions[i].id].mining !== 1) {
-          socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
-        }
+        socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
         scenes[players[myId].scene].scenery[collisions[i].id].mining = 1;
       }
       
