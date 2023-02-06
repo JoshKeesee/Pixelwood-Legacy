@@ -110,10 +110,7 @@ function animate() {
 
   scenes[players[myId].scene].scenery.forEach(object => {
     var height;
-    if (!object) {
-      i++;
-      return;
-    }
+    if (!object) return;
     if (object.type === "dirt") {
       height = 0;
     } else if (object.type === "tree") {
