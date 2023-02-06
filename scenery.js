@@ -1,62 +1,62 @@
 const plainTypes = ["tree", "small-tree", "flower", "blue-flower", "purple-flower"];
 const ores = ["emerald", "diamond", "gold", "iron", "ruby"];
-const scenes = {
-  0: {
+const scenes = [
+  {
     width: 20,
     height: 10,
     type: "plains",
     scenery: [],
     num: 80,
   },
-  1: {
+  {
     width: 6,
     height: 4,
     type: "house",
     scenery: [],
   },
-  2: {
+  {
     width: 6,
     height: 3,
     type: "house",
     scenery: [],
   },
-  3: {
+  {
     width: 10,
     height: 10,
     type: "plains",
     scenery: [],
     num: 60,
   },
-  4: {
+  {
     width: 40,
     height: 40,
     type: "cave",
     scenery: [],
     num: 150,
   },
-  5: {
+  {
     width: 6,
     height: 4,
     type: "house",
     scenery: [],
   },
-  6: {
+  {
     width: 10,
     height: 10,
     type: "plains",
     scenery: [],
     num: 60,
   },
-  7: {
+  {
     width: 20,
     height: 10,
     type: "plains",
     scenery: [],
     num: 150,
   },
-};
+];
 
-for (var i = 0; i < Object.keys(scenes).length; i++) {
+for (var i = 0; i < scenes.length; i++) {
   var scenery = scenes[i].scenery;
   if (scenes[i].type === "plains") {
     for (var x = 0; x < scenes[i].num; x++) {

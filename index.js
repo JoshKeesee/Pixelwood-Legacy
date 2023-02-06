@@ -13,8 +13,8 @@ var chestItems = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 const devs = ["13121245", "15824042", "6759741"];
 getChestItems();
 const scenes = require("./scenery");
-const Filter = require("bad-words");
-const customFilter = new Filter({ placeHolder: "*" });
+const Filter = require('bad-words');
+const filter = new Filter();
 
 function getChestItems() {
 	db.list().then(async (keys) => {
@@ -130,7 +130,7 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("chat message", (message) => {
-		io.emit("send message", [players[socket.id].name, customFilter.clean(message)]);
+		io.emit("send message", [players[socket.id].name, filter.clean(message)]);
 	});
 });
 

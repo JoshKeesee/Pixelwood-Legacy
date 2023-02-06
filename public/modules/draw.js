@@ -98,7 +98,8 @@ function animate() {
   Object.keys(players).forEach(id => {
     person[i] = {
       x: players[id].x,
-      y: players[id].y + frameheight / scale,
+      y: players[id].y,
+      h: frameheight / scale,
       type: "player",
       id: id,
     };
@@ -314,25 +315,21 @@ function animate() {
     } else if (object.type === "easter egg") {
       height = 200;
     }
-    newScenery[i] = {
-      x: object.x,
-      y: object.y + height,
-      type: object.type,
-      num: i,
-    };
+    newScenery[i] = object;
+    newScenery[i].h = height;
+    newScenery[i].num = i;
     i++;
   });
 
   var order = person.concat(newScenery);
   order.sort((a, b) => {
-    return a.y - b.y;
+    return (a.y + a.h) - (b.y + b.h);
   });
 
   for (var i = 0; i < order.length; i++) {
     var object = order[i];
-    if (!object) return;
     if (object.type === "dirt") {
-      ctx.drawImage(dirt, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, dirt.width, dirt.height);
+      ctx.drawImage(dirt, object.x, object.y, dirt.width, dirt.height);
     } else if (object.type === "tree") {
       if (colliding({
         x: players[myId].x,
@@ -340,17 +337,17 @@ function animate() {
         w: framewidth / scale,
         h: frameheight / scale,
       }, {
-        x: scenes[players[myId].scene].scenery[object.num].x,
-        y: scenes[players[myId].scene].scenery[object.num].y,
+        x: object.x,
+        y: object.y,
         w: tree.width,
         h: tree.height - 200,
       })) {
-        scenes[players[myId].scene].scenery[object.num].opacity += 0.2 * (0.6 - scenes[players[myId].scene].scenery[object.num].opacity);
+        object.opacity += 0.2 * (0.6 - object.opacity);
       } else {
-        scenes[players[myId].scene].scenery[object.num].opacity += 0.2 * (1 - scenes[players[myId].scene].scenery[object.num].opacity);
+        object.opacity += 0.2 * (1 - object.opacity);
       }
-      ctx.globalAlpha = scenes[players[myId].scene].scenery[object.num].opacity;
-      ctx.drawImage(tree, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, tree.width, tree.height);
+      ctx.globalAlpha = object.opacity;
+      ctx.drawImage(tree, object.x, object.y, tree.width, tree.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "small-tree") {
       if (colliding({
@@ -359,54 +356,54 @@ function animate() {
         w: framewidth / scale,
         h: frameheight / scale,
       }, {
-        x: scenes[players[myId].scene].scenery[object.num].x,
-        y: scenes[players[myId].scene].scenery[object.num].y,
+        x: object.x,
+        y: object.y,
         w: smallTree.width,
         h: smallTree.height - 150,
       })) {
-        scenes[players[myId].scene].scenery[object.num].opacity += 0.2 * (0.6 - scenes[players[myId].scene].scenery[object.num].opacity);
+        object.opacity += 0.2 * (0.6 - object.opacity);
       } else {
-        scenes[players[myId].scene].scenery[object.num].opacity += 0.2 * (1 - scenes[players[myId].scene].scenery[object.num].opacity);
+        object.opacity += 0.2 * (1 - object.opacity);
       }
-      ctx.globalAlpha = scenes[players[myId].scene].scenery[object.num].opacity;
-      ctx.drawImage(smallTree, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, smallTree.width, smallTree.height);
+      ctx.globalAlpha = object.opacity;
+      ctx.drawImage(smallTree, object.x, object.y, smallTree.width, smallTree.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "flower") {
-      ctx.drawImage(flower, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, flower.width, flower.height);
+      ctx.drawImage(flower, object.x, object.y, flower.width, flower.height);
     } else if (object.type === "blue-flower") {
-      ctx.drawImage(blueFlower, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, blueFlower.width, blueFlower.height);
+      ctx.drawImage(blueFlower, object.x, object.y, blueFlower.width, blueFlower.height);
     } else if (object.type === "purple-flower") {
-      ctx.drawImage(purpleFlower, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, purpleFlower.width, purpleFlower.height);
+      ctx.drawImage(purpleFlower, object.x, object.y, purpleFlower.width, purpleFlower.height);
     } else if (object.type === "house") {
-      ctx.drawImage(house, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, house.width, house.height);
+      ctx.drawImage(house, object.x, object.y, house.width, house.height);
     } else if (object.type === "ladder") {
-      ctx.drawImage(ladder, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, ladder.width, ladder.height);
+      ctx.drawImage(ladder, object.x, object.y, ladder.width, ladder.height);
     } else if (object.type === "bed") {
-      ctx.drawImage(bed, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, bed.width, bed.height);
+      ctx.drawImage(bed, object.x, object.y, bed.width, bed.height);
     } else if (object.type === "furnace") {
-      ctx.drawImage(furnace, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, furnace.width, furnace.height);
+      ctx.drawImage(furnace, object.x, object.y, furnace.width, furnace.height);
     } else if (object.type === "glass") {
-      ctx.drawImage(glass, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, glass.width, glass.height);
+      ctx.drawImage(glass, object.x, object.y, glass.width, glass.height);
     } else if (object.type === "cave") {
-      ctx.drawImage(cave, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, cave.width, cave.height);
+      ctx.drawImage(cave, object.x, object.y, cave.width, cave.height);
       ctx.beginPath();
-      ctx.rect(scenes[players[myId].scene].scenery[object.num].x + 200, scenes[players[myId].scene].scenery[object.num].y + 125, cave.width / 3, cave.width / 4);
+      ctx.rect(object.x + 200, object.y + 125, cave.width / 3, cave.width / 4);
       ctx.fillStyle = "black";
       ctx.fill();
       ctx.closePath();
     } else if (object.type === "sign") {
-      ctx.drawImage(sign, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, sign.width, sign.height);
+      ctx.drawImage(sign, object.x, object.y, sign.width, sign.height);
       ctx.textAlign = "center";
       ctx.font = "30px pixel";
       ctx.fillStyle = "black";
       ctx.textRendering = "optimizeLegibility";
-      ctx.fillText(scenes[players[myId].scene].scenery[object.num].text, scenes[players[myId].scene].scenery[object.num].x + sign.width / 2, scenes[players[myId].scene].scenery[object.num].y + sign.height / 2 - 5);
+      ctx.fillText(object.text, object.x + sign.width / 2, object.y + sign.height / 2 - 5);
     } else if (object.type === "chest") {
       var isOpen = true;
 
       for (var x = 0; x < Object.keys(players).length; x++) {
         if (players[Object.keys(players)[x]].chestOpen) {
-          ctx.drawImage(chestOpen, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y - 50, chestOpen.width, chestOpen.height);
+          ctx.drawImage(chestOpen, object.x, object.y - 50, chestOpen.width, chestOpen.height);
           break;
         }
 
@@ -416,42 +413,42 @@ function animate() {
       }
 
       if (!isOpen) {
-        ctx.drawImage(chestClosed, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, chestClosed.width, chestClosed.height);
+        ctx.drawImage(chestClosed, object.x, object.y, chestClosed.width, chestClosed.height);
       }
     } else if (object.type === "box") {
       ctx.beginPath();
-      ctx.rect(scenes[players[myId].scene].scenery[object.num].x - 0.5, scenes[players[myId].scene].scenery[object.num].y - 0.5, 200.5, 200.5);
+      ctx.rect(object.x - 0.5, object.y - 0.5, 200.5, 200.5);
       ctx.fillStyle = "black";
       ctx.fill();
       ctx.closePath();
     } else if (object.type === "emerald") {
-      ctx.globalAlpha = scenes[players[myId].scene].scenery[object.num].mining;
-      ctx.drawImage(emerald, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, emerald.width, emerald.height);
+      ctx.globalAlpha = object.mining;
+      ctx.drawImage(emerald, object.x, object.y, emerald.width, emerald.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "diamond") {
-      ctx.globalAlpha = scenes[players[myId].scene].scenery[object.num].mining;
-      ctx.drawImage(diamond, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, diamond.width, diamond.height);
+      ctx.globalAlpha = object.mining;
+      ctx.drawImage(diamond, object.x, object.y, diamond.width, diamond.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "ruby") {
-      ctx.globalAlpha = scenes[players[myId].scene].scenery[object.num].mining;
-      ctx.drawImage(ruby, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, ruby.width, ruby.height);
+      ctx.globalAlpha = object.mining;
+      ctx.drawImage(ruby, object.x, object.y, ruby.width, ruby.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "gold") {
-      ctx.globalAlpha = scenes[players[myId].scene].scenery[object.num].mining;
-      ctx.drawImage(gold, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, gold.width, gold.height);
+      ctx.globalAlpha = object.mining;
+      ctx.drawImage(gold, object.x, object.y, gold.width, gold.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "iron") {
-      ctx.globalAlpha = scenes[players[myId].scene].scenery[object.num].mining;
-      ctx.drawImage(iron, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, iron.width, iron.height);
+      ctx.globalAlpha = object.mining;
+      ctx.drawImage(iron, object.x, object.y, iron.width, iron.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "fountain") {
-      ctx.drawImage(fountain, fountainFrame * fountainWidth, 0, fountainWidth, fountainHeight, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, fountainWidth / 2, fountainHeight / 2);
+      ctx.drawImage(fountain, fountainFrame * fountainWidth, 0, fountainWidth, fountainHeight, object.x, object.y, fountainWidth / 2, fountainHeight / 2);
     } else if (object.type === "fence-vertical") {
-      ctx.drawImage(fenceVertical, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, fenceVertical.width, fenceVertical.height);
+      ctx.drawImage(fenceVertical, object.x, object.y, fenceVertical.width, fenceVertical.height);
     } else if (object.type === "fence-horizontal") {
-      ctx.drawImage(fenceHorizontal, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, fenceHorizontal.width, fenceHorizontal.height);
+      ctx.drawImage(fenceHorizontal, object.x, object.y, fenceHorizontal.width, fenceHorizontal.height);
     } else if (object.type === "fence-post") {
-      ctx.drawImage(fencePost, scenes[players[myId].scene].scenery[object.num].x, scenes[players[myId].scene].scenery[object.num].y, fencePost.width, fencePost.height);
+      ctx.drawImage(fencePost, object.x, object.y, fencePost.width, fencePost.height);
     } else if (object.type === "easter egg") {
       if (colliding({
         x: players[myId].x,
@@ -459,15 +456,15 @@ function animate() {
         w: framewidth / scale,
         h: frameheight / scale,
       }, {
-        x: scenes[players[myId].scene].scenery[object.num].x,
-        y: scenes[players[myId].scene].scenery[object.num].y,
+        x: object.x,
+        y: object.y,
         w: 200,
         h: 200 - 150,
       })) {
         easterEgg = true;
         $(".usetool .text").html("...?");
         if (players[myId].useTool) {
-          ctx.drawImage(bean, scenes[players[myId].scene].scenery[object.num].x + 200, scenes[players[myId].scene].scenery[object.num].y, bean.width, bean.height);
+          ctx.drawImage(bean, object.x + 200, object.y, bean.width, bean.height);
         }
       } else {
         easterEgg = false;

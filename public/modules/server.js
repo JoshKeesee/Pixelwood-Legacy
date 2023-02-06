@@ -2,6 +2,8 @@ const socket = io();
 
 var myId = 0;
 var players = {};
+var scenes = [];
+var chestItems = [];
 var playerData;
 var playerFrames;
 var gameSave;
