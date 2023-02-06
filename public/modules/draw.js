@@ -86,7 +86,7 @@ function animate() {
 
   if (scenes[players[myId].scene].type === "plains") {
     for (var i = 0; i < scenes[players[myId].scene].scenery.length; i++) {
-      if (scenes[players[myId].scene].scenery[i].type === "path") {
+      if (scenes[players[myId].scene].scenery[i]?.type === "path") {
         ctx.drawImage(path, scenes[players[myId].scene].scenery[i].x, scenes[players[myId].scene].scenery[i].y, path.width, path.height);
       }
     }

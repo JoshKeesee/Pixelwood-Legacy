@@ -93,7 +93,7 @@ for (var i = 0; i < Object.keys(scenes).length; i++) {
         yCord = Math.floor(Math.random() * 600) + 1100;
       }
       
-      scenery[x] = {
+      scenes[i].scenery[x] = {
         x: xCord,
         y: yCord,
         type: plainTypes[Math.floor(Math.random() * (plainTypes.length - 1))],
