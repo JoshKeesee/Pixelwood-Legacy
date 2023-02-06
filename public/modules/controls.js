@@ -71,16 +71,16 @@ function keyup(e) {
     players[myId].spot = 7;
   } else if (e.key === "8") {
     players[myId].spot = 8;
+  } else if (e.key === "ArrowUp" || e.key === "w") {
+    movement.up = false;
+  } else if (e.key === "ArrowDown" || e.key === "s") {
+    movement.down = false;
+  } else if (e.key === "ArrowLeft" || e.key === "a") {
+    movement.left = false;
+  } else if (e.key === "ArrowRight" || e.key === "d") {
+    movement.right = false;
   } else if (!transition && allowedToMove) {
-    if (e.key === "ArrowUp" || e.key === "w") {
-      movement.up = false;
-    } else if (e.key === "ArrowDown" || e.key === "s") {
-      movement.down = false;
-    } else if (e.key === "ArrowLeft" || e.key === "a") {
-      movement.left = false;
-    } else if (e.key === "ArrowRight" || e.key === "d") {
-      movement.right = false;
-    } else if (e.key === "x") {
+    if (e.key === "x") {
       movement.use = true;
     } else if (e.key === "c") {
       toggleBackpack();
