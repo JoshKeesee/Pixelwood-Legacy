@@ -1,0 +1,553 @@
+* {
+  margin: 0;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'VT323', monospace;
+  user-select: none;
+}
+
+footer {
+  position: fixed;
+  bottom: 10px;
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  letter-spacing: 3px;
+}
+
+.clip {
+  clip-path: polygon(
+    0px 40px,
+    8px 40px,
+    8px 24px,
+    16px 24px,
+    16px 16px,
+    24px 16px,
+    24px 8px,
+    32px 8px,
+    40px 8px,
+    40px 0px,
+    calc(100% - 40px) 0px,
+    calc(100% - 40px) 8px,
+    calc(100% - 24px) 8px,
+    calc(100% - 24px) 16px,
+    calc(100% - 16px) 16px,
+    calc(100% - 16px) 24px,
+    calc(100% - 8px) 24px,
+    calc(100% - 8px) 32px,
+    calc(100% - 8px) 40px,
+    100% 40px,
+    100% calc(100% - 40px),
+    calc(100% - 8px) calc(100% - 40px),
+    calc(100% - 8px) calc(100% - 24px),
+    calc(100% - 16px) calc(100% - 24px),
+    calc(100% - 16px) calc(100% - 16px),
+    calc(100% - 24px) calc(100% - 16px),
+    calc(100% - 24px) calc(100% - 8px),
+    calc(100% - 32px) calc(100% - 8px),
+    calc(100% - 40px) calc(100% - 8px),
+    calc(100% - 40px) 100%,
+    40px 100%,
+    40px calc(100% - 8px),
+    24px calc(100% - 8px),
+    24px calc(100% - 16px),
+    16px calc(100% - 16px),
+    16px calc(100% - 24px),
+    8px calc(100% - 24px),
+    8px calc(100% - 32px),
+    8px calc(100% - 40px),
+    0px calc(100% - 40px)
+  );
+}
+
+.loading {
+  image-rendering: pixelated;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  background: black;
+}
+
+.loading .icon {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+}
+
+.loading .icon img {
+  animation: rotate 2s infinite;
+  width: 50px;
+  height: 50px;
+}
+
+.loading .icon img:nth-child(2) {
+  animation-delay: 100ms;
+}
+
+.loading .icon img:nth-child(3) {
+  animation-delay: 200ms;
+}
+
+.main-menu {
+  image-rendering: pixelated;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: linear-gradient(to bottom, indigo, transparent);
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+}
+
+.main-menu .align {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  transition: opacity 200ms;
+  background: rgba(250, 250, 250, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 30px;
+  width: calc(20% + 50px);
+  opacity: 0;
+}
+
+.main-menu .logo {
+  animation: rotate 2s infinite;
+}
+
+.play {
+  cursor: pointer;
+  width: 70%;
+  margin: auto;
+}
+
+.play:hover {
+  transform: scale(105%);
+}
+
+.connected {
+  position: fixed;
+  top: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.players-connected {
+  position: fixed;
+  top: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.players-connected .box {
+  font-size: 20px;
+  font-family: arial;
+  color: lightgreen;
+  background: black;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.connected .box {
+  background: black;
+  padding: 0 5px;
+  border-radius: 10px;
+}
+
+.connected svg {
+  color: red;
+  width: 50px;
+  height: 50px;
+  animation: fade 4s infinite;
+}
+
+.login-button {
+  position: fixed;
+  top: 10px;
+  left: 60px;
+  z-index: 10;
+}
+
+.login-button img {
+  width: 30px;
+  height: 30px;
+}
+
+.logged-in {
+  color: lightgreen;
+  position: fixed;
+  top: 0;
+  left: 60px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: arial;
+  background: black;
+  padding: 13px 13px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.player-data {
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  word-break: break-word;
+  font-family: arial;
+  background: black;
+}
+
+.game-save {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: black;
+  padding: 10px 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.game-save div {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: arial;
+  animation: fade 2s infinite;
+}
+
+.manual-save {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+.button {
+  background: indigo;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: arial;
+  padding: 10px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: box-shadow 200ms, transform 200ms;
+  width: fit-content;
+  box-shadow: 0 0 0 slateblue;
+}
+
+.button:hover {
+  transform: translate(5px, -5px);
+  box-shadow: -5px 5px 0 slateblue;
+}
+
+.hidden {
+  display: none;
+}
+
+.chest {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  padding: 10px;
+  transform: translate(-50%, -50%);
+  background: gray;
+  width: 80%;
+  height: 70%;
+  border: 10px solid darkgray;
+  border-radius: 50px;
+}
+
+.backpack {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  padding: 10px;
+  transform: translate(-50%, -50%);
+  background: gray;
+  width: 80%;
+  height: 70%;
+  border: 10px solid darkgray;
+  border-radius: 50px;
+}
+
+.furnace {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: gray;
+  width: 80%;
+  height: 70%;
+  border: 10px solid darkgray;
+  border-radius: 50px;
+}
+
+.furnace .fire {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 15%;
+  transform: translate(0, -50%);
+}
+
+.furnace .input {
+  width: 100px;
+  height: 100px;
+  background: gray;
+  opacity: 0.8;
+  border: 3px solid lightgray;
+  position: absolute;
+  top: 15%;
+  left: 15%;
+}
+
+.furnace .input:hover {
+  background: darkgray;
+}
+
+.furnace .fuel {
+  width: 100px;
+  height: 100px;
+  background: gray;
+  opacity: 0.8;
+  border: 3px solid lightgray;
+  position: absolute;
+  bottom: 15%;
+  left: 15%;
+}
+
+.furnace .fuel:hover {
+  background: darkgray;
+}
+
+.furnace .output {
+  width: 100px;
+  height: 100px;
+  background: gray;
+  opacity: 0.8;
+  border: 5px solid white;
+  position: absolute;
+  right: 15%;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.furnace .output:hover {
+  background: darkgray;
+}
+
+progress {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  -webkit-appearance: none;
+}
+
+::-webkit-progress-bar {
+  background-color: gray;
+  border: 2px solid darkgray;
+  border-radius: 20px;
+}
+
+::-webkit-progress-value {
+  background-color: white;
+  border-radius: 20px;
+}
+
+.chest .text {
+  color: white;
+  font-size: 70px;
+  text-align: center;
+}
+
+.chest .grid {
+  display: inline-grid;
+  margin-top: 15px;
+  width: 100%;
+  grid-template-columns: auto auto auto auto auto auto auto auto;
+  grid-gap: 10px;
+}
+
+.chest .item {
+  position: relative;
+  background: gray;
+  opacity: 0.8;
+  border: 3px solid lightgray;
+}
+
+.chest .item:before {
+  content: ' ';
+  display: block;
+  width: 100%;
+  padding-top: 100%;
+}
+
+.chest .item:hover {
+  background: darkgray;
+}
+
+.chest .item img {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+}
+
+.backpack .text {
+  color: white;
+  font-size: 70px;
+  text-align: center;
+}
+
+.backpack .grid {
+  display: inline-grid;
+  margin-top: 15px;
+  width: 100%;
+  grid-template-columns: auto auto auto auto auto auto auto auto;
+  grid-gap: 10px;
+}
+
+.backpack .item {
+  position: relative;
+  background: gray;
+  opacity: 0.8;
+  border: 3px solid lightgray;
+}
+
+.backpack .item:before {
+  content: ' ';
+  display: block;
+  width: 100%;
+  padding-top: 100%;
+}
+
+.backpack .item:hover {
+  background: darkgray;
+}
+
+.backpack .item img {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+}
+
+.furnace .text {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 70px;
+  text-align: center;
+}
+
+.use {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.use:hover {
+  transform: scale(105%);
+}
+
+.use img {
+  width: 200px;
+}
+
+.use .text {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(200%);
+  color: white;
+  text-align: center;
+}
+
+.usetool {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  cursor: pointer;
+}
+
+.usetool:hover {
+  transform: scale(105%);
+}
+
+.usetool img {
+  width: 200px;
+}
+
+.usetool .text {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(200%);
+  color: white;
+  text-align: center;
+}
+
+.scene {
+  color: white;
+  font-size: 40px;
+  padding: 10px;
+  height: 150px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: darkorange;
+  border-top: black solid 5px;
+  z-index: 1;
+}
+
+.scene .continue {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+@font-face {
+  font-family: pixel;
+  src: url("https://dl.dropboxusercontent.com/s/hsdwvz761xqphhb/pixel.ttf");
+}
+
+@keyframes fade {
+  0%, 100% { opacity: 0.2 }
+  50% { opacity: 1 }
+}
+
+@keyframes rotate {
+  0%, 100% { transform: rotate(-5deg) scale(100%) }
+  25% { transform: scale(120%) }
+  50% { transform: rotate(5deg) scale(100%) }
+  75% { transform: scale(120%) }
+}
