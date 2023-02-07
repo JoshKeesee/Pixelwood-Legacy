@@ -104,7 +104,7 @@ io.on("connection", (socket) => {
 		socket.broadcast.emit("chestItems", chestItems);
 		await db.set("chestItems", JSON.stringify(chestItems));
 		if (!players[socket.id]?.dbId) return;
-    if (player.dbId === null) return;
+    if (players[socket.id].dbId === null) return;
 		await db.set(players[socket.id].dbId, JSON.stringify(players[socket.id]));
 	});
 
@@ -117,7 +117,7 @@ io.on("connection", (socket) => {
     delete players[socket.id];
 		io.emit("disconnected", socket.id);
 		if (!players[socket.id]?.dbId) return;
-    if (player.dbId === null) return;
+    if (players[socket.id].dbId === null) return;
 		await db.set(players[socket.id].dbId, JSON.stringify(players[socket.id]));
 	});
 
