@@ -33,7 +33,7 @@ socket.on("currentPlayers", (data) => {
 
   if (user) {
     players[myId].name = user.name;
-    socket.emit("playerData", user.id);
+    socket.emit("playerData");
   }
 
   updatePlayer = setInterval(() => {
@@ -134,13 +134,13 @@ socket.on("updateOres", (data) => {
   scenes[players[socket.id].scene].scenery[data[1]] = data[0];
 });
 
-socket.on("chestItems", (data) => {
+socket.on("update chestItems", (data) => {
   chestItems = data;
   for (var i = 0; i < chestItems.length; i++) {
     if (chestItems[i] !== "") {
-      document.querySelectorAll(".item")[i].innerHTML = "<img id='" + chestItems[i] + "' src='" + items[chestItems[i]].src + "'>";
+      document.querySelectorAll(".chest .item")[i].innerHTML = "<img id='" + chestItems[i] + "' src='" + items[chestItems[i]].src + "'>";
     } else {
-      document.querySelectorAll(".item")[i].innerHTML = "";
+      document.querySelectorAll(".chest .item")[i].innerHTML = "";
     }
   }
 });

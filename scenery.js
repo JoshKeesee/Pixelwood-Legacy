@@ -28,11 +28,11 @@ const scenes = [
     num: 60,
   },
   {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     type: "cave",
     scenery: [],
-    num: 200,
+    num: 170,
   },
   {
     width: 6,
@@ -125,15 +125,15 @@ for (var i = 0; i < scenes.length; i++) {
       }
 
       if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "diamond") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.0001;
+        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.00001;
       } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "emerald") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.0005;
+        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.000001;
       } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "iron") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.01;
-      } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "gold") {
         scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.001;
+      } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "gold") {
+        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.01;
       } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "ruby") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.0004;
+        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.0001;
       }
     }
 
@@ -193,13 +193,19 @@ for (var i = 0; i < scenes.length; i++) {
       }
 
       scenery[scenery.length] = {
-        x: 300,
+        x: 200,
+        y: 0,
+        type: "workbench",
+      }
+
+      scenery[scenery.length] = {
+        x: 450,
         y: 0,
         type: "chest",
       }
 
       scenery[scenery.length] = {
-        x: 200,
+        x: 350,
         y: 0,
         type: "furnace",
       }
@@ -361,7 +367,13 @@ for (var i = 0; i < scenes.length; i++) {
       }
 
       scenery[scenery.length] = {
-        x: 400,
+        x: 650,
+        y: 0,
+        type: "workbench",
+      }
+
+      scenery[scenery.length] = {
+        x: 450,
         y: 0,
         type: "chest",
       }

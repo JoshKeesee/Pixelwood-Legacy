@@ -57,7 +57,7 @@ function doneLoading() {
   tutorial[7] = new Cutscene("Don't worry though, you have a torch which you can hold to light up the place!", "typeWriter");
   tutorial[8] = new Cutscene("Inside the cave, you can find lots of ores that can be mined and used for currency...", "typeWriter");
   tutorial[9] = new Cutscene("...but some of them take a while to mine, so you may need to upgrade your pickaxe.", "typeWriter");
-  tutorial[10] = new Cutscene("Iron is the easiest to mine, then gold, then emerald, then ruby, and then diamond.", "typeWriter");
+  tutorial[10] = new Cutscene("Gold is the easiest to mine, then iron, then ruby, then diamond, and then emerald.", "typeWriter");
   tutorial[11] = new Cutscene("You can also use the different utilities inside the house such as the chest to store items or the furnace to smelt things.", "toScene", {x: 5 * 200 - 400 / 4, y: 0, toScene: 1});
   tutorial[12] = new Cutscene("Pixelwood also has some pretty easy controls, which include...", "typeWriter");
   tutorial[13] = new Cutscene("...using the Arrow keys or WASD to move...", "typeWriter");

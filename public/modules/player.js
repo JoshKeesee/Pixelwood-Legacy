@@ -8,6 +8,16 @@ var CAMERAX = 0;
 var CAMERAY = 0;
 var CAMERAZOOM = 1;
 var smoothing = 0.25;
+var workbenchRecipes = {
+  "gold-pickaxe": ["gold", "gold", "gold", "", "wooden-pickaxe", "", "", "", ""],
+  "iron-pickaxe": ["iron", "iron", "iron", "", "gold-pickaxe", "", "", "", ""],
+  "ruby-pickaxe": ["ruby", "ruby", "ruby", "", "iron-pickaxe", "", "", "", ""],
+  "diamond-pickaxe": ["diamond", "diamond", "diamond", "", "ruby-pickaxe", "", "", "", ""],
+  "gold-sword": ["", "gold", "", "", "gold", "", "", "wooden-sword", ""],
+  "iron-sword": ["", "iron", "", "", "iron", "", "", "gold-sword", ""],
+  "ruby-sword": ["", "ruby", "", "", "ruby", "", "", "iron-sword", ""],
+  "diamond-sword": ["", "diamond", "", "", "diamond", "", "", "ruby-sword", ""],
+}
 
 const playerLoop = () => {
   playerData = requestAnimationFrame(playerLoop);
@@ -80,8 +90,22 @@ const playerLoop = () => {
         $(".use").removeClass("hidden");
       }
 
-      if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") && players[myId].inventory[players[myId].spot - 1] === "pickaxe" && players[myId].useTool) {
-        scenes[players[myId].scene].scenery[collisions[i].id].mining -= scenes[players[myId].scene].scenery[collisions[i].id].miningSpeed;
+      var hitForce = 0;
+
+      if (players[myId].inventory[players[myId].spot - 1] === "wooden-pickaxe") {
+        hitForce = 1;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "gold-pickaxe") {
+        hitForce = 8;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "iron-pickaxe") {
+        hitForce = 12;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "ruby-pickaxe") {
+        hitForce = 18;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "diamond-pickaxe") {
+        hitForce = 20;
+      }
+
+      if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") && players[myId].inventory[players[myId].spot - 1].includes("pickaxe") && players[myId].useTool) {
+        scenes[players[myId].scene].scenery[collisions[i].id].mining -= scenes[players[myId].scene].scenery[collisions[i].id].miningSpeed * hitForce;
         if (scenes[players[myId].scene].scenery[collisions[i].id].mining < 0 && !scenes[players[myId].scene].scenery[collisions[i].id].mined) {
           scenes[players[myId].scene].scenery[collisions[i].id].mining = 0;
           scenes[players[myId].scene].scenery[collisions[i].id].mined = true;
@@ -109,13 +133,15 @@ const playerLoop = () => {
       if (collisions[i].type !== "ladder" && collisions[i].type !== "exit" && collisions[i].type !== "bed" && collisions[i].type !== "change") {
         if (colT(players[myId], collisions[i])) {
           players[myId].y = collisions[i].y - (frameheight / scale) - 2;
-          if ((collisions[i].type === "furnace" || collisions[i].type === "chest") && players[myId].costumeY === 0) {
+          if ((collisions[i].type === "furnace" || collisions[i].type === "chest" || collisions[i].type === "workbench") && players[myId].costumeY === 0) {
             players[myId].y = collisions[i].y - (frameheight / scale);
             $(".use").removeClass("hidden");
             if (movement.use && collisions[i].type === "furnace" && !players[myId].chestOpen) {
               toggleFurnace();
-            } else if (movement.use) {
+            } else if (movement.use && collisions[i].type === "chest") {
               toggleChest();
+            } else if (movement.use) {
+              toggleWorkbench();
             }
           } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
             players[myId].y = collisions[i].y - (frameheight / scale);
@@ -124,13 +150,15 @@ const playerLoop = () => {
 
         if (colB(players[myId], collisions[i])) {
           players[myId].y = collisions[i].y + collisions[i].h + 2;
-          if ((collisions[i].type === "furnace" || collisions[i].type === "chest") && players[myId].costumeY === 1) {
+          if ((collisions[i].type === "furnace" || collisions[i].type === "chest" || collisions[i].type === "workbench") && players[myId].costumeY === 1) {
             players[myId].y = collisions[i].y + collisions[i].h;
             $(".use").removeClass("hidden");
-            if (movement.use && collisions[i].type === "furnace") {
+            if (movement.use && collisions[i].type === "furnace" && !players[myId].chestOpen) {
               toggleFurnace();
-            } else if (movement.use) {
+            } else if (movement.use && collisions[i].type === "chest") {
               toggleChest();
+            } else if (movement.use) {
+              toggleWorkbench();
             }
           } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
             players[myId].y = collisions[i].y + collisions[i].h;
@@ -139,13 +167,15 @@ const playerLoop = () => {
 
         if (colR(players[myId], collisions[i])) {
           players[myId].x = collisions[i].x + collisions[i].w + 2;
-          if ((collisions[i].type === "furnace" || collisions[i].type === "chest") && players[myId].costumeY === 2) {
+          if ((collisions[i].type === "furnace" || collisions[i].type === "chest" || collisions[i].type === "workbench") && players[myId].costumeY === 2) {
             players[myId].x = collisions[i].x + collisions[i].w;
             $(".use").removeClass("hidden");
-            if (movement.use && collisions[i].type === "furnace") {
+            if (movement.use && collisions[i].type === "furnace" && !players[myId].chestOpen) {
               toggleFurnace();
-            } else if (movement.use) {
+            } else if (movement.use && collisions[i].type === "chest") {
               toggleChest();
+            } else if (movement.use) {
+              toggleWorkbench();
             }
           } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
             players[myId].x = collisions[i].x + collisions[i].w;
@@ -154,13 +184,15 @@ const playerLoop = () => {
 
         if (colL(players[myId], collisions[i])) {
           players[myId].x = collisions[i].x - (framewidth / scale) - 2;
-          if ((collisions[i].type === "furnace" || collisions[i].type === "chest") && players[myId].costumeY === 3) {
+          if ((collisions[i].type === "furnace" || collisions[i].type === "chest" || collisions[i].type === "workbench") && players[myId].costumeY === 3) {
             players[myId].x = collisions[i].x - (framewidth / scale);
             $(".use").removeClass("hidden");
-            if (movement.use && collisions[i].type === "furnace") {
+            if (movement.use && collisions[i].type === "furnace" && !players[myId].chestOpen) {
               toggleFurnace();
-            } else if (movement.use) {
+            } else if (movement.use && collisions[i].type === "chest") {
               toggleChest();
+            } else if (movement.use) {
+              toggleWorkbench();
             }
           } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
             players[myId].x = collisions[i].x - (framewidth / scale);
@@ -285,6 +317,12 @@ function toggleChest() {
   $(".chest").slideToggle(200);
 }
 
+function toggleWorkbench() {
+  allowedToMove = !allowedToMove;
+  usingUtility = !usingUtility;
+  $(".workbench").slideToggle(200);
+}
+
 function toggleBackpack() {
   allowedToMove = !allowedToMove;
   usingUtility = !usingUtility;
@@ -342,6 +380,63 @@ function selectItemFromBackpack(item) {
       players[myId].backpack[i] = "";
     }
   }
+}
+
+function selectItemFromWorkbench(item) {
+  var originalItem = players[myId].inventory[players[myId].spot - 1];
+  if (document.getElementById(item).innerHTML === "") {
+    document.getElementById(item).innerHTML = "<img id='" + players[myId].inventory[players[myId].spot - 1] + "' src='" + items[players[myId].inventory[players[myId].spot - 1]].src + "'>";
+    players[myId].inventory[players[myId].spot - 1] = "";
+  } else {
+    if (players[myId].inventory[players[myId].spot - 1] === "") {
+      players[myId].inventory[players[myId].spot - 1] = document.getElementById(item).firstChild.id;
+      document.getElementById(item).innerHTML = "";
+    } else {
+      players[myId].inventory[players[myId].spot - 1] = document.getElementById(item).firstChild.id;
+      document.getElementById(item).innerHTML = "<img id='" + originalItem + "' src='" + items[originalItem].src + "'>";
+    }
+  }
+
+  for (var i = 0; i < Object.keys(workbenchRecipes).length; i++) {
+    for (var x = 0; x < workbenchRecipes[Object.keys(workbenchRecipes)[i]].length; x++) {
+      if (document.querySelectorAll(".workbench .input .item")[x].innerHTML === "") { 
+        if (workbenchRecipes[Object.keys(workbenchRecipes)[i]][x] !== "") break;
+      } else if (!document.querySelectorAll(".workbench .input .item")[x].firstChild) {
+        break;
+      } else if (document.querySelectorAll(".workbench .input .item")[x].firstChild.id !== workbenchRecipes[Object.keys(workbenchRecipes)[i]][x]) {
+        break;
+      }
+
+      if (x === workbenchRecipes[Object.keys(workbenchRecipes)[i]].length - 1) {
+        document.querySelector(".workbench .output").innerHTML = "<img id='" + Object.keys(workbenchRecipes)[i] + "' src='" + items[Object.keys(workbenchRecipes)[i]].src + "'>";
+        break;
+      }
+    }
+  }
+}
+
+function takeOutputFromWorkbench() {
+  if (document.querySelector(".workbench .output").innerHTML === "") return;
+  for (var i = 0; i < document.querySelectorAll(".workbench .input .item").length; i++) {
+    document.querySelectorAll(".workbench .input .item")[i].innerHTML = "";
+  }
+
+  for (var x = 0; x < players[myId].inventory.length; x++) {
+    if (players[myId].inventory[x] === "") {
+      players[myId].inventory[x] = document.querySelector(".workbench .output").firstChild.id;
+      break;
+    }
+    if (x === players[myId].inventory.length - 1) {
+      for (var y = 0; y < players[myId].backpack.length; y++) {
+        if (players[myId].backpack[y] === "") {
+          players[myId].backpack[y] = document.querySelector(".workbench .output").firstChild.id;
+          break;
+        }
+      }
+    }
+  }
+
+  document.querySelector(".workbench .output").innerHTML = "";
 }
 
 function useTool() {

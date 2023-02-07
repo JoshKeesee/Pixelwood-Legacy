@@ -42,7 +42,6 @@ function nextScene() {
       tutorial[players[myId].cutScene].typeWriter();
     } else if (tutorial[players[myId].cutScene].type.includes("toScene")) {
       tutorial[players[myId].cutScene].toScene();
-      saveGame();
     }
     players[myId].cutScene++;
   } else {

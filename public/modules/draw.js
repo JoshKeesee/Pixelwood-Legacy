@@ -187,6 +187,15 @@ function animate() {
         h: furnace.height,
         type: "furnace",
       }
+    } else if (object.type === "workbench") {
+      height = workbench.height;
+      collisions[collisions.length] = {
+        x: object.x,
+        y: object.y,
+        w: workbench.width,
+        h: workbench.height,
+        type: "workbench",
+      }
     } else if (object.type === "bed") {
       height = 0;
       collisions[collisions.length] = {
@@ -382,6 +391,8 @@ function animate() {
       ctx.drawImage(bed, object.x, object.y, bed.width, bed.height);
     } else if (object.type === "furnace") {
       ctx.drawImage(furnace, object.x, object.y, furnace.width, furnace.height);
+    } else if (object.type === "workbench") {
+      ctx.drawImage(workbench, object.x, object.y, workbench.width, workbench.height);
     } else if (object.type === "glass") {
       ctx.drawImage(glass, object.x, object.y, glass.width, glass.height);
     } else if (object.type === "cave") {
@@ -486,7 +497,7 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1] === "pickaxe" || player.inventory[player.spot - 1] === "sword") {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -497,7 +508,7 @@ function animate() {
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
           ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1] === "pickaxe" || player.inventory[player.spot - 1] === "sword") {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
             ctx.restore();
           }
         } else {
@@ -524,7 +535,7 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1] === "pickaxe" || player.inventory[player.spot - 1] === "sword") {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -535,7 +546,7 @@ function animate() {
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
           ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1] === "pickaxe" || player.inventory[player.spot - 1] === "sword") {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
             ctx.restore();
           }
         } else {
@@ -562,7 +573,7 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1] === "pickaxe" || player.inventory[player.spot - 1] === "sword") {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -573,7 +584,7 @@ function animate() {
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
           ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1] === "pickaxe" || player.inventory[player.spot - 1] === "sword") {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
             ctx.restore();
           }
         } else {

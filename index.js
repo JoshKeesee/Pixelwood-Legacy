@@ -57,8 +57,8 @@ io.on("connection", (socket) => {
 		y: 0,
 		xVel: 0,
 		yVel: 0,
-		w: 0,
-		h: 0,
+		w: 100,
+		h: 125,
 		speed: 1,
 		scene: 1,
     cutScene: 0,
@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
 		torch: 0,
     rotate: 0,
 		spot: 1,
-		inventory: ["sword", "pickaxe", "coal", "torch", "", "", "", ""],
+		inventory: ["wooden-sword", "wooden-pickaxe", "coal", "torch", "", "", "", ""],
     backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
 		dbId: null,
 		name: randomName(),
@@ -81,10 +81,11 @@ io.on("connection", (socket) => {
 
 	// instead of doing this because sb could tamper request use socket.user.id to get id of authed user
 	socket.on("playerData", async () => {
-		if (!socket.user.id) return;
+		if (!socket.user?.id) return;
 		const keys = await db.list();
 		if (keys.includes(socket.user.id)) {
 			let player = await db.get(socket.user.id);
+      if (!player) return;
 			player = JSON.parse(player);
 			player.dbId = socket.user.id;
 			socket.emit("playerData", player);
@@ -101,11 +102,10 @@ io.on("connection", (socket) => {
 
 	socket.on("chestItems", async (data) => {
 		chestItems = data;
-		socket.broadcast.emit("chestItems", chestItems);
+		socket.broadcast.emit("update chestItems", chestItems);
 		await db.set("chestItems", JSON.stringify(chestItems));
-		if (!players[socket.id]?.dbId) return;
-    if (players[socket.id].dbId === null) return;
-		await db.set(players[socket.id].dbId, JSON.stringify(players[socket.id]));
+		if (!socket.user?.id) return;
+		await db.set(socket.user.id, JSON.stringify(players[socket.id]));
 	});
 
 	socket.on("updateOres", (data) => {
@@ -114,17 +114,17 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("disconnect", async () => {
+    const player = players[socket.id];
     delete players[socket.id];
 		io.emit("disconnected", socket.id);
-		if (!players[socket.id]?.dbId) return;
-    if (players[socket.id].dbId === null) return;
-		await db.set(players[socket.id].dbId, JSON.stringify(players[socket.id]));
+		if (!socket.user?.id) return;
+		await db.set(socket.user.id, JSON.stringify(player));
 	});
 
 	socket.on("gameSave", async (player) => {
-		if (!player?.dbId) return;
-    if (player.dbId === null) return;
-		await db.set(player.dbId, JSON.stringify(players[socket.id]));
+		if (player.dbId === null) return;
+    players[socket.id] = player;
+		await db.set(players[socket.id].dbId, JSON.stringify(players[socket.id]));
 	});
 
 	socket.on("playerMovement", (data) => {

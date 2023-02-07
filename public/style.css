@@ -292,6 +292,96 @@ footer {
   border-radius: 50px;
 }
 
+.workbench {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: gray;
+  width: 80%;
+  height: 70%;
+  border: 10px solid darkgray;
+  border-radius: 50px;
+}
+
+.workbench .text {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 70px;
+  text-align: center;
+}
+
+.workbench .output {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: gray;
+  opacity: 0.8;
+  border: 5px solid white;
+  position: absolute;
+  right: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.workbench .output:before {
+  content: ' ';
+  display: block;
+  width: 100%;
+  padding-top: 100%;
+}
+
+.workbench .output:hover {
+  background: darkgray;
+}
+
+.workbench .output img {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+}
+
+.workbench .input {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: auto auto auto;
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transform: translateY(-50%);
+}
+
+.workbench .input .item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: gray;
+  opacity: 0.8;
+  border: 3px solid lightgray;
+}
+
+.workbench .input .item:before {
+  content: ' ';
+  display: block;
+  width: 100%;
+  padding-top: 100%;
+}
+
+.workbench .input .item:hover {
+  background: darkgray;
+}
+
+.workbench .input .item img {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+}
+
 .furnace {
   position: fixed;
   top: 45%;
@@ -357,6 +447,16 @@ footer {
 
 .furnace .output:hover {
   background: darkgray;
+}
+
+.furnace .text {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 70px;
+  text-align: center;
 }
 
 progress {
@@ -455,16 +555,6 @@ progress {
   top: 5%;
   left: 5%;
   width: 90%;
-}
-
-.furnace .text {
-  position: absolute;
-  top: 30px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 70px;
-  text-align: center;
 }
 
 .use {

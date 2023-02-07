@@ -49,7 +49,6 @@ const CACHE_LIST = [
   "/images/iron.png",
   "/images/ladder.png",
   "/images/path.png",
-  "/images/pickaxe.png",
   "/images/pixelwood-logo_big.png",
   "/images/pixelwood-logo.png",
   "/images/plank.png",
@@ -62,9 +61,11 @@ const CACHE_LIST = [
   "/images/ruby.png",
   "/images/sign.png",
   "/images/small-tree.png",
-  "/images/sword.png",
   "/images/torch.png",
   "/images/tree.png",
+  "/images/wooden-pickaxe.png",
+  "/images/wooden-sword.png",
+  "/images/workbench.png",
 ];
 
 const STATIC_CACHE_VERSION = `static-v1-${new Date().getTime()}`;
