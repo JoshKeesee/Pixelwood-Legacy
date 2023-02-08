@@ -32,7 +32,7 @@ const offlineScenes = [
     height: 40,
     type: "cave",
     scenery: [],
-    num: 170,
+    num: 200,
   },
   {
     width: 6,
@@ -53,6 +53,13 @@ const offlineScenes = [
     type: "plains",
     scenery: [],
     num: 150,
+  },
+  {
+    width: 40,
+    height: 40,
+    type: "cave",
+    scenery: [],
+    num: 200,
   },
 ];
 
