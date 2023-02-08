@@ -110,7 +110,7 @@ io.on("connection", (socket) => {
 
 	socket.on("updateOres", (data) => {
 		scenes[players[socket.id].scene].scenery[data[1]] = data[0];
-		socket.broadcast.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1]]);
+		socket.broadcast.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
 	});
 
 	socket.on("disconnect", async () => {

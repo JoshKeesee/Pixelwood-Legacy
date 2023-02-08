@@ -131,7 +131,7 @@ socket.on("newPlayer", (player) => {
 });
 
 socket.on("updateOres", (data) => {
-  scenes[players[socket.id].scene].scenery[data[1]] = data[0];
+  scenes[data[2]].scenery[data[1]] = data[0];
 });
 
 socket.on("update chestItems", (data) => {

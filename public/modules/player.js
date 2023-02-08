@@ -99,9 +99,9 @@ const playerLoop = () => {
       } else if (players[myId].inventory[players[myId].spot - 1] === "iron-pickaxe") {
         hitForce = 12;
       } else if (players[myId].inventory[players[myId].spot - 1] === "ruby-pickaxe") {
-        hitForce = 18;
+        hitForce = 24;
       } else if (players[myId].inventory[players[myId].spot - 1] === "diamond-pickaxe") {
-        hitForce = 20;
+        hitForce = 28;
       }
 
       if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") && players[myId].inventory[players[myId].spot - 1].includes("pickaxe") && players[myId].useTool) {
