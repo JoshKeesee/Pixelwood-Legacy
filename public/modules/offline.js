@@ -1,62 +1,62 @@
 const plainTypes = ["tree", "small-tree", "flower", "blue-flower", "purple-flower"];
 const ores = ["emerald", "diamond", "gold", "iron", "ruby"];
-const offlineScenes = {
-  0: {
+const offlineScenes = [
+  {
     width: 20,
     height: 10,
     type: "plains",
     scenery: [],
     num: 80,
   },
-  1: {
+  {
     width: 6,
     height: 4,
     type: "house",
     scenery: [],
   },
-  2: {
+  {
     width: 6,
     height: 3,
     type: "house",
     scenery: [],
   },
-  3: {
+  {
     width: 10,
     height: 10,
     type: "plains",
     scenery: [],
     num: 60,
   },
-  4: {
+  {
     width: 40,
     height: 40,
     type: "cave",
     scenery: [],
-    num: 150,
+    num: 170,
   },
-  5: {
+  {
     width: 6,
     height: 4,
     type: "house",
     scenery: [],
   },
-  6: {
+  {
     width: 10,
     height: 10,
     type: "plains",
     scenery: [],
     num: 60,
   },
-  7: {
+  {
     width: 20,
     height: 10,
     type: "plains",
     scenery: [],
     num: 150,
   },
-};
+];
 
-for (var i = 0; i < Object.keys(offlineScenes).length; i++) {
+for (var i = 0; i < offlineScenes.length; i++) {
   var scenery = offlineScenes[i].scenery;
   if (offlineScenes[i].type === "plains") {
     for (var x = 0; x < offlineScenes[i].num; x++) {
@@ -93,7 +93,7 @@ for (var i = 0; i < Object.keys(offlineScenes).length; i++) {
         yCord = Math.floor(Math.random() * 600) + 1100;
       }
       
-      scenery[x] = {
+      offlineScenes[i].scenery[x] = {
         x: xCord,
         y: yCord,
         type: plainTypes[Math.floor(Math.random() * (plainTypes.length - 1))],
@@ -125,15 +125,15 @@ for (var i = 0; i < Object.keys(offlineScenes).length; i++) {
       }
 
       if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "diamond") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.0001;
+        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.00001;
       } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "emerald") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.0005;
+        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.000001;
       } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "iron") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.01;
-      } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "gold") {
         offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.001;
+      } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "gold") {
+        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.01;
       } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "ruby") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.0004;
+        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.0001;
       }
     }
 
@@ -193,13 +193,19 @@ for (var i = 0; i < Object.keys(offlineScenes).length; i++) {
       }
 
       scenery[scenery.length] = {
-        x: 300,
+        x: 200,
+        y: 0,
+        type: "workbench",
+      }
+
+      scenery[scenery.length] = {
+        x: 450,
         y: 0,
         type: "chest",
       }
 
       scenery[scenery.length] = {
-        x: 200,
+        x: 350,
         y: 0,
         type: "furnace",
       }
@@ -361,7 +367,13 @@ for (var i = 0; i < Object.keys(offlineScenes).length; i++) {
       }
 
       scenery[scenery.length] = {
-        x: 400,
+        x: 650,
+        y: 0,
+        type: "workbench",
+      }
+
+      scenery[scenery.length] = {
+        x: 450,
         y: 0,
         type: "chest",
       }

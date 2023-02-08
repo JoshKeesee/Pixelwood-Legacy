@@ -113,8 +113,8 @@ for (var i = 0; i < scenes.length; i++) {
     }
 
     for (var x = 0; x < scenes[i].num; x++) {
-      var xCord = Math.floor(Math.random() * (scenes[i].width - 4)) + 4;
-      var yCord = Math.floor(Math.random() * (scenes[i].height - 4)) + 4;
+      var xCord = Math.floor(Math.random() * scenes[i].width);
+      var yCord = Math.floor(Math.random() * scenes[i].height);
       
       scenes[i].scenery[scenes[i].scenery.length] = {
         x: xCord * 200,
@@ -127,7 +127,7 @@ for (var i = 0; i < scenes.length; i++) {
       if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "diamond") {
         scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.00001;
       } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "emerald") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.000001;
+        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.000009;
       } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "iron") {
         scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.001;
       } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "gold") {
