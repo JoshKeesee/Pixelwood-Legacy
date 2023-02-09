@@ -45,6 +45,8 @@ socket.on("currentPlayers", (data) => {
       socket.emit("playerMovement", players[myId]);
     }
   }, 1000 / 30);
+
+  if (players[myId].cutScene >= tutorial.length) players[myId].ready = true;
 });
 
 function checkForAnimate() {
@@ -122,7 +124,6 @@ socket.on("playerData", (player) => {
       document.querySelectorAll(".backpack .item")[i].innerHTML = "";
     }
   }
-  saveGame();
   gameSave = setInterval(saveGame, 30000);
 });
 
@@ -164,3 +165,10 @@ socket.on("disconnect", () => {
 socket.on("disconnected", (player) => {
   delete players[player];
 });
+
+window.console.log = () => {
+  console.error("I told you to stop. I will report you.");
+  window.console.log = () => {
+    return false;
+  }
+}

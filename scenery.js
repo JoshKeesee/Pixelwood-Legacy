@@ -32,7 +32,7 @@ const scenes = [
     height: 40,
     type: "cave",
     scenery: [],
-    num: 200,
+    num: 250,
   },
   {
     width: 6,
@@ -108,71 +108,7 @@ for (var i = 0; i < scenes.length; i++) {
       }
     }
   } else if (scenes[i].type === "cave") {
-    for (var y = 0; y < scenes[i].height; y++) {
-      for (var x = 0; x < scenes[i].width; x++) {
-        scenes[i].scenery[scenes[i].scenery.length] = {
-          x: 200 * x,
-          y: 200 * y,
-          type: "box",
-          opacity: 1,
-        }
-      }
-    }
-
-    for (var x = 0; x < scenes[i].num; x++) {
-      var xCord = Math.floor(Math.random() * scenes[i].width);
-      var yCord = Math.floor(Math.random() * scenes[i].height);
-      
-      scenes[i].scenery[scenes[i].scenery.length] = {
-        x: xCord * 200,
-        y: yCord * 200,
-        type: ores[Math.floor(Math.random() * ores.length)],
-        mining: 1,
-        mined: false,
-      }
-
-      if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "diamond") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.00001;
-      } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "emerald") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.000009;
-      } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "iron") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.001;
-      } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "gold") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.01;
-      } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "ruby") {
-        scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.0001;
-      }
-    }
-
-    var intX = 0;
-    var intY = 0;
-    
-    delete scenes[i].scenery[0];
-
-    for (var x = 0; x < scenes[i].width * scenes[i].height; x++) {
-      if (x % 2 === 0) {
-        intX += randomNumber(-1, 1);
-      } else {
-        intY += randomNumber(-1, 1);
-      }
-
-      if (intX < 0) {
-        intX = 0;
-      }
-      if (intY < 0) {
-        intY = 0;
-      }
-      if (intX > scenes[i].width) {
-        intX = scenes[i].width;
-      }
-      if (intY > scenes[i].height) {
-        intY = scenes[i].height;
-      }
-
-      if (intX + intY * scenes[i].height < scenes[i].scenery.length) {
-        delete scenes[i].scenery[intX + intY * scenes[i].height];
-      }
-    }
+    updateCave(i);
   } else if (scenes[i].type === "house") {
     if (i === 1) {
       scenery[scenery.length] = {
@@ -1194,6 +1130,74 @@ scenes[7].scenery[scenes[7].scenery.length] = {
   y: 800,
   type: "path",
 };
+
+function updateCave(i) {
+  for (var y = 0; y < scenes[i].height; y++) {
+    for (var x = 0; x < scenes[i].width; x++) {
+      scenes[i].scenery[scenes[i].scenery.length] = {
+        x: 200 * x,
+        y: 200 * y,
+        type: "box",
+        opacity: 1,
+      }
+    }
+  }
+
+  for (var x = 0; x < scenes[i].num; x++) {
+    var xCord = Math.floor(Math.random() * scenes[i].width);
+    var yCord = Math.floor(Math.random() * scenes[i].height);
+    
+    scenes[i].scenery[scenes[i].scenery.length] = {
+      x: xCord * 200,
+      y: yCord * 200,
+      type: ores[Math.floor(Math.random() * ores.length)],
+      mining: 1,
+      mined: false,
+    }
+
+    if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "diamond") {
+      scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.00001;
+    } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "emerald") {
+      scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.000009;
+    } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "iron") {
+      scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.001;
+    } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "gold") {
+      scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.01;
+    } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "ruby") {
+      scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.0001;
+    }
+  }
+
+  var intX = 0;
+  var intY = 0;
+  
+  delete scenes[i].scenery[0];
+
+  for (var x = 0; x < scenes[i].width * scenes[i].height; x++) {
+    if (x % 2 === 0) {
+      intX += randomNumber(-1, 1);
+    } else {
+      intY += randomNumber(-1, 1);
+    }
+
+    if (intX < 0) {
+      intX = 0;
+    }
+    if (intY < 0) {
+      intY = 0;
+    }
+    if (intX > scenes[i].width) {
+      intX = scenes[i].width;
+    }
+    if (intY > scenes[i].height) {
+      intY = scenes[i].height;
+    }
+
+    if (intX + intY * scenes[i].height < scenes[i].scenery.length) {
+      delete scenes[i].scenery[intX + intY * scenes[i].height];
+    }
+  }
+}
 
 function randomNumber(min, max) {
   min = Math.ceil(min);

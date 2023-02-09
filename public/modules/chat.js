@@ -20,8 +20,9 @@ function disableChat() {
 
 document.getElementById("input").addEventListener("keydown", (e) => {
   if (e.key == "Enter" && connected) {
-    var message = document.getElementById("input").value;
-    if (message !== "") {
+    var message = document.getElementById("input").value.toString();
+    if (!message) return;
+    if (message !== "" && message !== null) {
       socket.emit("chat message", message);
       document.getElementById("input").value = "";
     }

@@ -18,7 +18,7 @@ const mouse = {
 };
 
 function keydown(e) {
-  if (!transition && allowedToMove) {
+  if (!transition && allowedToMove && !  chatOpen) {
     if (e.key === "ArrowUp" || e.key === "w") {
       movement.up = true;
       players[myId].chestOpen = false;

@@ -6,15 +6,27 @@ const favicon = require("serve-favicon");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true
+  }
+});
 const port = process.env.PORT || 3000;
 const players = {};
 var chestItems = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-const devs = ["13121245", "15824042", "6759741"];
+const ores = ["emerald", "diamond", "gold", "iron", "ruby"];
+const devs = ["13121245", "15824042", "6759741", "18760736"];
 getChestItems();
 const scenes = require("./scenery");
-const Filter = require('bad-words');
+const Filter = require("bad-words");
 const filter = new Filter();
+const { instrument } = require("@socket.io/admin-ui");
+
+instrument(io, {
+  auth: false,
+  mode: "production",
+});
 
 function getChestItems() {
 	db.list().then(async (keys) => {
@@ -109,7 +121,21 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("updateOres", (data) => {
-		scenes[players[socket.id].scene].scenery[data[1]] = data[0];
+    if (scenes[players[socket.id].scene].type !== "cave") return;
+    if (data[0].mined) {
+      var xCord = Math.floor(Math.random() * scenes[players[socket.id].scene].width);
+      var yCord = Math.floor(Math.random() * scenes[players[socket.id].scene].height);
+      
+      scenes[players[socket.id].scene].scenery[data[1]] = {
+        x: xCord * 200,
+        y: yCord * 200,
+        type: ores[Math.floor(Math.random() * ores.length)],
+        mining: 1,
+        mined: false,
+      }
+    } else {
+		  scenes[players[socket.id].scene].scenery[data[1]] = data[0];
+    }
 		socket.broadcast.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
 	});
 
@@ -122,6 +148,7 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("gameSave", async (player) => {
+    if (!player) return;
 		if (player.dbId === null) return;
     players[socket.id] = player;
 		await db.set(players[socket.id].dbId, JSON.stringify(players[socket.id]));
@@ -133,6 +160,8 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("chat message", (message) => {
+    if (!message) return;
+    if (message === null) return;
 		io.emit("send message", [players[socket.id].name, filter.clean(message)]);
 	});
 });

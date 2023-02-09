@@ -13,10 +13,12 @@ var workbenchRecipes = {
   "iron-pickaxe": ["iron", "iron", "iron", "", "gold-pickaxe", "", "", "", ""],
   "ruby-pickaxe": ["ruby", "ruby", "ruby", "", "iron-pickaxe", "", "", "", ""],
   "diamond-pickaxe": ["diamond", "diamond", "diamond", "", "ruby-pickaxe", "", "", "", ""],
+  "emerald-pickaxe": ["emerald", "emerald", "emerald", "", "diamond-pickaxe", "", "", "", ""],
   "gold-sword": ["", "gold", "", "", "gold", "", "", "wooden-sword", ""],
   "iron-sword": ["", "iron", "", "", "iron", "", "", "gold-sword", ""],
   "ruby-sword": ["", "ruby", "", "", "ruby", "", "", "iron-sword", ""],
   "diamond-sword": ["", "diamond", "", "", "diamond", "", "", "ruby-sword", ""],
+  "emerald-sword": ["", "emerald", "", "", "emerald", "", "", "diamond-sword", ""],
 }
 
 const playerLoop = () => {
@@ -102,6 +104,8 @@ const playerLoop = () => {
         hitForce = 24;
       } else if (players[myId].inventory[players[myId].spot - 1] === "diamond-pickaxe") {
         hitForce = 28;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-pickaxe") {
+        hitForce = 50;
       }
 
       if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") && players[myId].inventory[players[myId].spot - 1].includes("pickaxe") && players[myId].useTool) {

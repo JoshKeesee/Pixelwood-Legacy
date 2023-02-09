@@ -33,6 +33,8 @@ const CACHE_LIST = [
   "/images/diamond.png",
   "/images/dirt.png",
   "/images/emerald-ingot.png",
+  "/images/emerald-pickaxe.png",
+  "/images/emerald-sword.png",
   "/images/emerald.png",
   "/images/fence-horizontal.png",
   "/images/fence-post.png",
@@ -88,7 +90,7 @@ self.addEventListener("install", function (event) {
   );
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   const onSuccessCachesKeys = (cacheNames) => {
     return Promise.all(
       cacheNames.map((cache) => {
@@ -102,7 +104,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(caches.keys().then(onSuccessCachesKeys));
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   const FALLBACK_URL = CACHE_LIST[0];
 
   const onSuccessFetch = response => {
