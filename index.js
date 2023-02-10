@@ -108,6 +108,9 @@ io.on("connection", (socket) => {
 			player.dbId = socket.user.id;
       player.id = socket.id;
       delete players[socket.id];
+      if (player.inventory.includes("sword") || player.inventory.includes("pickaxe")) {
+        player.inventory = ["coal", "torch", "", "", "", "", "", ""];
+      }
 			socket.emit("playerData", player);
 		}
 	};
