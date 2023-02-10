@@ -130,6 +130,10 @@ socket.on("updateOres", (data) => {
   scenes[data[2]].scenery[data[1]] = data[0];
 });
 
+socket.on("updateTrees", (data) => {
+  scenes[data[2]].scenery[data[1]] = data[0];
+});
+
 socket.on("update chestItems", (data) => {
   chestItems = data;
   for (var i = 0; i < chestItems.length; i++) {

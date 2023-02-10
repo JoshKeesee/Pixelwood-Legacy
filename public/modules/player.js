@@ -3,22 +3,31 @@ $(".chest").slideUp(0);
 
 var allowedToMove = false;
 var usingUtility = false;
+var collidingWithTree = false;
 
 var CAMERAX = 0;
 var CAMERAY = 0;
 var CAMERAZOOM = 1;
 var smoothing = 0.25;
 var workbenchRecipes = {
-  "gold-pickaxe": ["gold", "gold", "gold", "", "wooden-pickaxe", "", "", "", ""],
-  "iron-pickaxe": ["iron", "iron", "iron", "", "gold-pickaxe", "", "", "", ""],
-  "ruby-pickaxe": ["ruby", "ruby", "ruby", "", "iron-pickaxe", "", "", "", ""],
-  "diamond-pickaxe": ["diamond", "diamond", "diamond", "", "ruby-pickaxe", "", "", "", ""],
-  "emerald-pickaxe": ["emerald", "emerald", "emerald", "", "diamond-pickaxe", "", "", "", ""],
-  "gold-sword": ["", "gold", "", "", "gold", "", "", "wooden-sword", ""],
-  "iron-sword": ["", "iron", "", "", "iron", "", "", "gold-sword", ""],
-  "ruby-sword": ["", "ruby", "", "", "ruby", "", "", "iron-sword", ""],
-  "diamond-sword": ["", "diamond", "", "", "diamond", "", "", "ruby-sword", ""],
-  "emerald-sword": ["", "emerald", "", "", "emerald", "", "", "diamond-sword", ""],
+  "wooden-pickaxe": ["stick", "stick", "stick", "", "stick", "", "", "stick", ""],
+  "gold-pickaxe": ["gold", "gold", "gold", "", "stick", "", "", "stick", ""],
+  "iron-pickaxe": ["iron", "iron", "iron", "", "stick", "", "", "stick", ""],
+  "ruby-pickaxe": ["ruby", "ruby", "ruby", "", "stick", "", "", "stick", ""],
+  "diamond-pickaxe": ["diamond", "diamond", "diamond", "", "stick", "", "", "stick", ""],
+  "emerald-pickaxe": ["emerald", "emerald", "emerald", "", "stick", "", "", "stick", ""],
+  "wooden-sword": ["", "stick", "", "", "stick", "", "", "stick", ""],
+  "gold-sword": ["", "gold", "", "", "gold", "", "", "stick", ""],
+  "iron-sword": ["", "iron", "", "", "iron", "", "", "stick", ""],
+  "ruby-sword": ["", "ruby", "", "", "ruby", "", "", "stick", ""],
+  "diamond-sword": ["", "diamond", "", "", "diamond", "", "", "stick", ""],
+  "emerald-sword": ["", "emerald", "", "", "emerald", "", "", "stick", ""],
+  "wooden-axe": ["", "stick", "stick", "", "stick", "stick", "", "stick", ""],
+  "gold-axe": ["", "gold", "gold", "", "stick", "gold", "", "stick", ""],
+  "iron-axe": ["", "iron", "iron", "", "stick", "iron", "", "stick", ""],
+  "ruby-axe": ["", "ruby", "ruby", "", "stick", "ruby", "", "stick", ""],
+  "diamond-axe": ["", "diamond", "diamond", "", "stick", "diamond", "", "stick", ""],
+  "emerald-axe": ["", "emerald", "emerald", "", "stick", "emerald", "", "stick", ""],
 }
 
 const playerLoop = () => {
@@ -136,15 +145,72 @@ const playerLoop = () => {
   
             if (colliding(player, collisions[i]) && player.id !== myId) break;
   
-            if (i === Object.keys(players).length - 1) {
+            if (x === Object.keys(players).length - 1) {
               scenes[players[myId].scene].scenery[collisions[i].id].mining = 1;
               socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
             }
           };
         }
       }
+
+      var hitForce = 0;
+
+      if (players[myId].inventory[players[myId].spot - 1] === "") {
+        hitForce = 1/8;
+        if (collisions[i].type === "tree" || collisions[i].type === "small-tree") {
+          collidingWithTree = true;
+        }
+      } else if (players[myId].inventory[players[myId].spot - 1] === "wooden-axe") {
+        hitForce = 1/4;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "gold-axe") {
+        hitForce = 1/2;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "iron-axe") {
+        hitForce = 1;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "ruby-axe") {
+        hitForce = 2;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "diamond-axe") {
+        hitForce = 4;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-axe") {
+        hitForce = 8;
+      }
+
+      if ((collisions[i].type === "tree" || collisions[i].type === "small-tree") && (players[myId].inventory[players[myId].spot - 1].includes("axe") || players[myId].inventory[players[myId].spot - 1] === "") && players[myId].useTool) {
+        scenes[players[myId].scene].scenery[collisions[i].id].mining -= scenes[players[myId].scene].scenery[collisions[i].id].miningSpeed * hitForce;
+        if (scenes[players[myId].scene].scenery[collisions[i].id].mining < 0 && !scenes[players[myId].scene].scenery[collisions[i].id].mined) {
+          scenes[players[myId].scene].scenery[collisions[i].id].mining = 0;
+          scenes[players[myId].scene].scenery[collisions[i].id].mined = true;
+          for (var x = 0; x < players[myId].inventory.length; x++) {
+            if (players[myId].inventory[x] === "") {
+              players[myId].inventory[x] = "stick";
+              break;
+            }
+            if (x === players[myId].inventory.length - 1) {
+              for (var y = 0; y < players[myId].backpack.length; y++) {
+                if (players[myId].backpack[y] === "") {
+                  players[myId].backpack[y] = "stick";
+                  break;
+                }
+              }
+            }
+          }
+        }
+        socket.emit("updateTrees", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
+      } else if (collisions[i].type === "tree" || collisions[i].type === "small-tree") {
+        if (!scenes[players[myId].scene].scenery[collisions[i].id].mined) {
+          for (var x = 0; x < Object.keys(players).length; x++) {
+            const player = players[Object.keys(players)[x]];
+  
+            if (colliding(player, collisions[i]) && player.id !== myId) break;
+  
+            if (x === Object.keys(players).length - 1) {
+              scenes[players[myId].scene].scenery[collisions[i].id].mining = 1;
+              socket.emit("updateTrees", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
+            }
+          };
+        }
+      }
       
-      if (collisions[i].type !== "ladder" && collisions[i].type !== "exit" && collisions[i].type !== "bed" && collisions[i].type !== "change") {
+      if (collisions[i].type !== "ladder" && collisions[i].type !== "exit" && collisions[i].type !== "bed" && collisions[i].type !== "change" && collisions[i].type !== "tree" && collisions[i].type !== "small-tree") {
         if (colT(players[myId], collisions[i])) {
           players[myId].y = collisions[i].y - (frameheight / scale) - 2;
           if ((collisions[i].type === "furnace" || collisions[i].type === "chest" || collisions[i].type === "workbench") && players[myId].costumeY === 0) {
@@ -277,6 +343,12 @@ const playerLoop = () => {
     $(".usetool").removeClass("hidden");
 
     $(".usetool .text").html("USE " + players[myId].inventory[players[myId].spot - 1].toUpperCase() + "(Z)");
+  } else if (collidingWithTree) {
+    $(".usetool").removeClass("hidden");
+
+    $(".usetool .text").html("PUNCH TREE(Z)");
+
+    collidingWithTree = false;
   } else if (easterEgg) {
     $(".usetool").removeClass("hidden");
   } else {
@@ -411,18 +483,27 @@ function selectItemFromWorkbench(item) {
     }
   }
 
+  var recipeFound = false;
+
   for (var i = 0; i < Object.keys(workbenchRecipes).length; i++) {
+    if (recipeFound) break;
     for (var x = 0; x < workbenchRecipes[Object.keys(workbenchRecipes)[i]].length; x++) {
       if (document.querySelectorAll(".workbench .input .item")[x].innerHTML === "") { 
-        if (workbenchRecipes[Object.keys(workbenchRecipes)[i]][x] !== "") break;
+        if (workbenchRecipes[Object.keys(workbenchRecipes)[i]][x] !== "") {
+          document.querySelector(".workbench .output").innerHTML = "";
+          break;
+        }
       } else if (!document.querySelectorAll(".workbench .input .item")[x].firstChild) {
+        document.querySelector(".workbench .output").innerHTML = "";
         break;
       } else if (document.querySelectorAll(".workbench .input .item")[x].firstChild.id !== workbenchRecipes[Object.keys(workbenchRecipes)[i]][x]) {
+        document.querySelector(".workbench .output").innerHTML = "";
         break;
       }
 
       if (x === workbenchRecipes[Object.keys(workbenchRecipes)[i]].length - 1) {
         document.querySelector(".workbench .output").innerHTML = "<img id='" + Object.keys(workbenchRecipes)[i] + "' src='" + items[Object.keys(workbenchRecipes)[i]].src + "'>";
+        recipeFound = true;
         break;
       }
     }

@@ -16,6 +16,7 @@ const port = process.env.PORT || 3000;
 const players = {};
 var chestItems = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 const ores = ["emerald", "diamond", "gold", "iron", "ruby"];
+const plainTypes = ["tree", "small-tree", "flower", "blue-flower", "purple-flower"];
 const devs = ["13121245", "15824042", "6759741", "18760736"];
 getChestItems();
 const scenes = require("./scenery");
@@ -83,7 +84,7 @@ io.on("connection", (socket) => {
 		torch: 0,
     rotate: 0,
 		spot: 1,
-		inventory: ["wooden-sword", "wooden-pickaxe", "coal", "torch", "", "", "", ""],
+		inventory: ["coal", "torch", "", "", "", "", "", ""],
     backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
 		dbId: null,
 		name: randomName(),
@@ -140,6 +141,59 @@ io.on("connection", (socket) => {
     } else {
 		  scenes[players[socket.id].scene].scenery[data[1]] = data[0];
       socket.broadcast.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
+    }
+	});
+
+  socket.on("updateTrees", (data) => {
+    if (scenes[players[socket.id].scene].type !== "plains") return;
+    if (!data[0]?.mined) return;
+    if (data[0].mined) {
+      var xCord = Math.floor(Math.random() * scenes[players[socket.id].scene].width);
+      var yCord = Math.floor(Math.random() * scenes[players[socket.id].scene].height);
+
+      if (players[socket.id].scene === 6 || players[socket.id].scene === 3) {
+        xCord = Math.floor(Math.random() * 1600);
+        yCord = Math.floor(Math.random() * 1600);
+      }
+  
+      if (players[socket.id].scene === 0 && xCord > 1000 && yCord < 1000) {
+        xCord = Math.floor(Math.random() * 1600);
+        yCord = Math.floor(Math.random() * 600) + 1000;
+      }
+
+      if (players[socket.id].scene === 0 && xCord > 1800) {
+        xCord = Math.floor(Math.random() * 1200);
+        yCord = Math.floor(Math.random() * 600) + 1000;
+      }
+      
+      if (players[socket.id].scene === 3 && xCord < 1200 && yCord < 1100) {
+        xCord = Math.floor(Math.random() * 600) + 1200;
+        yCord = Math.floor(Math.random() * 600) + 1100;
+      }
+
+      if (players[socket.id].scene === 6 && xCord < 1000 && yCord < 1100) {
+        xCord = Math.floor(Math.random() * 1000) + 1000;
+        yCord = Math.floor(Math.random() * 600) + 1100;
+      }
+
+      if (players[socket.id].scene === 7 && xCord > 2000 && yCord < 1100) {
+        xCord = Math.floor(Math.random() * 2000);
+        yCord = Math.floor(Math.random() * 600) + 1100;
+      }
+      
+      scenes[players[socket.id].scene].scenery[data[1]] = {
+        x: xCord * 200,
+        y: yCord * 200,
+        type: ["tree", "small-tree"][Math.floor(Math.random() * ["tree", "small-tree"].length)],
+        mining: 1,
+        mined: false,
+        miningSpeed: 0.01,
+      }
+
+      io.emit("updateTrees", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
+    } else {
+		  scenes[players[socket.id].scene].scenery[data[1]] = data[0];
+      socket.broadcast.emit("updateTrees", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     }
 	});
 

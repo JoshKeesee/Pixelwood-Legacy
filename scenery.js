@@ -6,7 +6,7 @@ const scenes = [
     height: 10,
     type: "plains",
     scenery: [],
-    num: 80,
+    num: 40,
   },
   {
     width: 6,
@@ -25,7 +25,7 @@ const scenes = [
     height: 10,
     type: "plains",
     scenery: [],
-    num: 60,
+    num: 20,
   },
   {
     width: 32,
@@ -45,21 +45,14 @@ const scenes = [
     height: 10,
     type: "plains",
     scenery: [],
-    num: 60,
+    num: 40,
   },
   {
     width: 20,
     height: 10,
     type: "plains",
     scenery: [],
-    num: 150,
-  },
-  {
-    width: 40,
-    height: 40,
-    type: "cave",
-    scenery: [],
-    num: 200,
+    num: 40,
   },
 ];
 
@@ -105,6 +98,9 @@ for (var i = 0; i < scenes.length; i++) {
         y: yCord,
         type: plainTypes[Math.floor(Math.random() * (plainTypes.length - 1))],
         opacity: 1,
+        mining: 1,
+        mined: false,
+        miningSpeed: 0.01,
       }
     }
   } else if (scenes[i].type === "cave") {
@@ -818,6 +814,9 @@ scenes[3].scenery[scenes[3].scenery.length] = {
   y: 500,
   type: "small-tree",
   opacity: 1,
+  mining: 1,
+  mined: false,
+  miningSpeed: 0.01,
 };
 
 scenes[3].scenery[scenes[3].scenery.length] = {
@@ -825,6 +824,9 @@ scenes[3].scenery[scenes[3].scenery.length] = {
   y: 500,
   type: "small-tree",
   opacity: 1,
+  mining: 1,
+  mined: false,
+  miningSpeed: 0.01,
 };
 
 scenes[3].scenery[scenes[3].scenery.length] = {

@@ -6,7 +6,7 @@ const offlineScenes = [
     height: 10,
     type: "plains",
     scenery: [],
-    num: 80,
+    num: 40,
   },
   {
     width: 6,
@@ -25,11 +25,11 @@ const offlineScenes = [
     height: 10,
     type: "plains",
     scenery: [],
-    num: 60,
+    num: 20,
   },
   {
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
     type: "cave",
     scenery: [],
     num: 200,
@@ -45,21 +45,14 @@ const offlineScenes = [
     height: 10,
     type: "plains",
     scenery: [],
-    num: 60,
+    num: 40,
   },
   {
     width: 20,
     height: 10,
     type: "plains",
     scenery: [],
-    num: 150,
-  },
-  {
-    width: 40,
-    height: 40,
-    type: "cave",
-    scenery: [],
-    num: 200,
+    num: 40,
   },
 ];
 
@@ -105,74 +98,13 @@ for (var i = 0; i < offlineScenes.length; i++) {
         y: yCord,
         type: plainTypes[Math.floor(Math.random() * (plainTypes.length - 1))],
         opacity: 1,
+        mining: 1,
+        mined: false,
+        miningSpeed: 0.01,
       }
     }
   } else if (offlineScenes[i].type === "cave") {
-    for (var y = 0; y < offlineScenes[i].height; y++) {
-      for (var x = 0; x < offlineScenes[i].width; x++) {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length] = {
-          x: 200 * x,
-          y: 200 * y,
-          type: "box",
-          opacity: 1,
-        }
-      }
-    }
-
-    for (var x = 0; x < offlineScenes[i].num; x++) {
-      var xCord = Math.floor(Math.random() * offlineScenes[i].width);
-      var yCord = Math.floor(Math.random() * offlineScenes[i].height);
-      
-      offlineScenes[i].scenery[offlineScenes[i].scenery.length] = {
-        x: xCord * 200,
-        y: yCord * 200,
-        type: ores[Math.floor(Math.random() * ores.length)],
-        mining: 1,
-        mined: false,
-      }
-
-      if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "diamond") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.00001;
-      } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "emerald") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.000009;
-      } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "iron") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.001;
-      } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "gold") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.01;
-      } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "ruby") {
-        offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.0001;
-      }
-    }
-
-    var intX = 0;
-    var intY = 0;
-    
-    delete offlineScenes[i].scenery[0];
-
-    for (var x = 0; x < offlineScenes[i].width * offlineScenes[i].height; x++) {
-      if (x % 2 === 0) {
-        intX += randomNumber(-1, 1);
-      } else {
-        intY += randomNumber(-1, 1);
-      }
-
-      if (intX < 0) {
-        intX = 0;
-      }
-      if (intY < 0) {
-        intY = 0;
-      }
-      if (intX > offlineScenes[i].width) {
-        intX = offlineScenes[i].width;
-      }
-      if (intY > offlineScenes[i].height) {
-        intY = offlineScenes[i].height;
-      }
-
-      if (intX + intY * offlineScenes[i].height < offlineScenes[i].scenery.length) {
-        delete offlineScenes[i].scenery[intX + intY * offlineScenes[i].height];
-      }
-    }
+    updateCave(i);
   } else if (offlineScenes[i].type === "house") {
     if (i === 1) {
       scenery[scenery.length] = {
@@ -882,6 +814,9 @@ offlineScenes[3].scenery[offlineScenes[3].scenery.length] = {
   y: 500,
   type: "small-tree",
   opacity: 1,
+  mining: 1,
+  mined: false,
+  miningSpeed: 0.01,
 };
 
 offlineScenes[3].scenery[offlineScenes[3].scenery.length] = {
@@ -889,6 +824,9 @@ offlineScenes[3].scenery[offlineScenes[3].scenery.length] = {
   y: 500,
   type: "small-tree",
   opacity: 1,
+  mining: 1,
+  mined: false,
+  miningSpeed: 0.01,
 };
 
 offlineScenes[3].scenery[offlineScenes[3].scenery.length] = {
@@ -1194,6 +1132,74 @@ offlineScenes[7].scenery[offlineScenes[7].scenery.length] = {
   y: 800,
   type: "path",
 };
+
+function updateCave(i) {
+  for (var y = 0; y < offlineScenes[i].height; y++) {
+    for (var x = 0; x < offlineScenes[i].width; x++) {
+      offlineScenes[i].scenery[offlineScenes[i].scenery.length] = {
+        x: 200 * x,
+        y: 200 * y,
+        type: "box",
+        opacity: 1,
+      }
+    }
+  }
+
+  for (var x = 0; x < offlineScenes[i].num; x++) {
+    var xCord = Math.floor(Math.random() * offlineScenes[i].width);
+    var yCord = Math.floor(Math.random() * offlineScenes[i].height);
+    
+    offlineScenes[i].scenery[offlineScenes[i].scenery.length] = {
+      x: xCord * 200,
+      y: yCord * 200,
+      type: ores[Math.floor(Math.random() * ores.length)],
+      mining: 1,
+      mined: false,
+    }
+
+    if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "diamond") {
+      offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.00001;
+    } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "emerald") {
+      offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.000009;
+    } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "iron") {
+      offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.001;
+    } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "gold") {
+      offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.01;
+    } else if (offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].type === "ruby") {
+      offlineScenes[i].scenery[offlineScenes[i].scenery.length - 1].miningSpeed = 0.0001;
+    }
+  }
+
+  var intX = 0;
+  var intY = 0;
+  
+  delete offlineScenes[i].scenery[0];
+
+  for (var x = 0; x < offlineScenes[i].width * offlineScenes[i].height; x++) {
+    if (x % 2 === 0) {
+      intX += randomNumber(-1, 1);
+    } else {
+      intY += randomNumber(-1, 1);
+    }
+
+    if (intX < 0) {
+      intX = 0;
+    }
+    if (intY < 0) {
+      intY = 0;
+    }
+    if (intX > offlineScenes[i].width) {
+      intX = offlineScenes[i].width;
+    }
+    if (intY > offlineScenes[i].height) {
+      intY = offlineScenes[i].height;
+    }
+
+    if (intX + intY * offlineScenes[i].height < offlineScenes[i].scenery.length) {
+      delete offlineScenes[i].scenery[intX + intY * offlineScenes[i].height];
+    }
+  }
+}
 
 function randomNumber(min, max) {
   min = Math.ceil(min);

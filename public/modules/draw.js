@@ -116,8 +116,30 @@ function animate() {
       height = 0;
     } else if (object.type === "tree") {
       height = tree.height;
+      if (!object.mined) {
+        collisions[collisions.length] = {
+          x: object.x,
+          y: object.y,
+          w: tree.width,
+          h: tree.height,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
+          mining: object.mining,
+          type: "tree",
+        }
+      }
     } if (object.type === "small-tree") {
       height = smallTree.height;
+      if (!object.mined) {
+        collisions[collisions.length] = {
+          x: object.x,
+          y: object.y,
+          w: smallTree.width,
+          h: smallTree.height,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
+          mining: object.mining,
+          type: "small-tree",
+        }
+      }
     } else if (object.type === "flower") {
       height = flower.height;
     } else if (object.type === "blue-flower") {
@@ -340,41 +362,11 @@ function animate() {
     if (object.type === "dirt") {
       ctx.drawImage(dirt, object.x, object.y, dirt.width, dirt.height);
     } else if (object.type === "tree") {
-      if (colliding({
-        x: players[myId].x,
-        y: players[myId].y,
-        w: framewidth / scale,
-        h: frameheight / scale,
-      }, {
-        x: object.x,
-        y: object.y,
-        w: tree.width,
-        h: tree.height - 200,
-      })) {
-        object.opacity += 0.2 * (0.6 - object.opacity);
-      } else {
-        object.opacity += 0.2 * (1 - object.opacity);
-      }
-      ctx.globalAlpha = object.opacity;
+      ctx.globalAlpha = object.mining;
       ctx.drawImage(tree, object.x, object.y, tree.width, tree.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "small-tree") {
-      if (colliding({
-        x: players[myId].x,
-        y: players[myId].y,
-        w: framewidth / scale,
-        h: frameheight / scale,
-      }, {
-        x: object.x,
-        y: object.y,
-        w: smallTree.width,
-        h: smallTree.height - 150,
-      })) {
-        object.opacity += 0.2 * (0.6 - object.opacity);
-      } else {
-        object.opacity += 0.2 * (1 - object.opacity);
-      }
-      ctx.globalAlpha = object.opacity;
+      ctx.globalAlpha = object.mining;
       ctx.drawImage(smallTree, object.x, object.y, smallTree.width, smallTree.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "flower") {
@@ -497,7 +489,7 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -508,7 +500,7 @@ function animate() {
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
           ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
             ctx.restore();
           }
         } else {
@@ -535,7 +527,7 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -546,7 +538,7 @@ function animate() {
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
           ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
             ctx.restore();
           }
         } else {
@@ -573,7 +565,7 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -584,7 +576,7 @@ function animate() {
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
           ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword")) {
+          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
             ctx.restore();
           }
         } else {
