@@ -18,7 +18,7 @@ const mouse = {
 };
 
 function keydown(e) {
-  if (!transition && allowedToMove && !  chatOpen) {
+  if (!transition && allowedToMove && !chatOpen) {
     if (e.key === "ArrowUp" || e.key === "w") {
       movement.up = true;
       players[myId].chestOpen = false;
@@ -79,7 +79,7 @@ function keyup(e) {
     movement.left = false;
   } else if (e.key === "ArrowRight" || e.key === "d") {
     movement.right = false;
-  } else if (!transition && allowedToMove) {
+  } else if (!transition && allowedToMove && !chatOpen) {
     if (e.key === "x") {
       movement.use = true;
     } else if (e.key === "c") {

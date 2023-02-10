@@ -129,9 +129,19 @@ const playerLoop = () => {
           }
         }
         socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
-      } else if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") && !scenes[players[myId].scene].scenery[collisions[i].id].mined) {
-        socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
-        scenes[players[myId].scene].scenery[collisions[i].id].mining = 1;
+      } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
+        if (!scenes[players[myId].scene].scenery[collisions[i].id].mined) {
+          for (var x = 0; x < Object.keys(players).length; x++) {
+            const player = players[Object.keys(players)[x]];
+  
+            if (colliding(player, collisions[i]) && player.id !== myId) break;
+  
+            if (i === Object.keys(players).length - 1) {
+              scenes[players[myId].scene].scenery[collisions[i].id].mining = 1;
+              socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
+            }
+          };
+        }
       }
       
       if (collisions[i].type !== "ladder" && collisions[i].type !== "exit" && collisions[i].type !== "bed" && collisions[i].type !== "change") {

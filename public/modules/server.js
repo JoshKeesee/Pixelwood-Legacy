@@ -31,11 +31,6 @@ socket.on("currentPlayers", (data) => {
 
   socket.emit("playerMovement", players[socket.id]);
 
-  if (user) {
-    players[myId].name = user.name;
-    socket.emit("playerData");
-  }
-
   updatePlayer = setInterval(() => {
     if (user) {
       players[myId].name = user.name;
@@ -57,8 +52,8 @@ function checkForAnimate() {
     		y: 0,
     		xVel: 0,
     		yVel: 0,
-    		w: 0,
-    		h: 0,
+    		w: 100,
+    		h: 125,
     		speed: 1,
     		scene: 1,
         cutScene: 0,
@@ -71,7 +66,7 @@ function checkForAnimate() {
     		torch: 0,
         rotate: 0,
     		spot: 1,
-    		inventory: ["sword", "pickaxe", "coal", "torch", "", "", "", ""],
+    		inventory: ["wooden-sword", "wooden-pickaxe", "coal", "torch", "", "", "", ""],
         backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
     		dbId: null,
     		name: "Offline",

@@ -91,24 +91,25 @@ io.on("connection", (socket) => {
 		ready: false,
 	};
 
-	// instead of doing this because sb could tamper request use socket.user.id to get id of authed user
-	socket.on("playerData", async () => {
-		if (!socket.user?.id) return;
+  getPlayerData();
+
+	async function getPlayerData() {
+		if (!socket.user?.id) {
+      socket.emit("currentPlayers", [players, scenes, chestItems]);
+      return;
+    }
 		const keys = await db.list();
 		if (keys.includes(socket.user.id)) {
+      socket.emit("currentPlayers", [players, scenes, chestItems]);
 			let player = await db.get(socket.user.id);
       if (!player) return;
 			player = JSON.parse(player);
 			player.dbId = socket.user.id;
+      player.id = socket.id;
+      delete players[socket.id];
 			socket.emit("playerData", player);
-		} else if (players[socket.id]) {
-			players[socket.id].dbId = socket.user.id;
-			await db.set(socket.user.id, JSON.stringify(players[socket.id]));
-			socket.emit("playerData", players[socket.id]);
 		}
-	});
-
-	socket.emit("currentPlayers", [players, scenes, chestItems]);
+	};
 
 	socket.broadcast.emit("newPlayer", players[socket.id]);
 
@@ -122,6 +123,7 @@ io.on("connection", (socket) => {
 
 	socket.on("updateOres", (data) => {
     if (scenes[players[socket.id].scene].type !== "cave") return;
+    if (!data[0]?.mined) return;
     if (data[0].mined) {
       var xCord = Math.floor(Math.random() * scenes[players[socket.id].scene].width);
       var yCord = Math.floor(Math.random() * scenes[players[socket.id].scene].height);
@@ -133,10 +135,12 @@ io.on("connection", (socket) => {
         mining: 1,
         mined: false,
       }
+
+      io.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     } else {
 		  scenes[players[socket.id].scene].scenery[data[1]] = data[0];
+      socket.broadcast.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     }
-		socket.broadcast.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
 	});
 
 	socket.on("disconnect", async () => {
