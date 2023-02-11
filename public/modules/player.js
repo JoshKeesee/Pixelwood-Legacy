@@ -165,13 +165,13 @@ const playerLoop = () => {
       } else if (players[myId].inventory[players[myId].spot - 1] === "gold-axe") {
         hitForce = 1/2;
       } else if (players[myId].inventory[players[myId].spot - 1] === "iron-axe") {
-        hitForce = 1;
+        hitForce = 3/4;
       } else if (players[myId].inventory[players[myId].spot - 1] === "ruby-axe") {
-        hitForce = 2;
+        hitForce = 1;
       } else if (players[myId].inventory[players[myId].spot - 1] === "diamond-axe") {
-        hitForce = 4;
+        hitForce = 1 + 1/4;
       } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-axe") {
-        hitForce = 8;
+        hitForce = 1 + 1/2;
       }
 
       if ((collisions[i].type === "tree" || collisions[i].type === "small-tree") && (players[myId].inventory[players[myId].spot - 1].includes("axe") || players[myId].inventory[players[myId].spot - 1] === "") && players[myId].useTool) {
