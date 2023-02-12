@@ -31,6 +31,7 @@ var emerald;
 var gold;
 var iron;
 var ruby;
+var coal;
 var fountainWidth = 640;
 var fountainHeight = 640;
 var fountainFrame = 0;
@@ -93,7 +94,7 @@ items.stick = document.createElement("img");
 items.stick.src = "/images/stick.png";
 items.stick.onload = incrementCounter;
 items.coal = document.createElement("img");
-items.coal.src = "/images/coal.png";
+items.coal.src = "/images/coal-ingot.png";
 items.coal.onload = incrementCounter;
 items.torch = document.createElement("img");
 items.torch.src = "/images/torch.png";
@@ -114,7 +115,7 @@ items.ruby = document.createElement("img");
 items.ruby.src = "/images/ruby-ingot.png";
 items.ruby.onload = incrementCounter;
 
-const images = [costume, grass, dirt, path, rocks, tree, smallTree, flower, blueFlower, purpleFlower, house, tree, ladder, bed, furnace, chestClosed, chestOpen, workbench, glass, cave, sign, fountain, bean, fenceVertical, fenceHorizontal, fencePost, emerald, diamond, gold, iron, ruby].concat(Object.keys(items));
+const images = [costume, grass, dirt, path, rocks, tree, smallTree, flower, blueFlower, purpleFlower, house, tree, ladder, bed, furnace, chestClosed, chestOpen, workbench, glass, cave, sign, fountain, bean, fenceVertical, fenceHorizontal, fencePost, emerald, diamond, gold, iron, ruby, coal].concat(Object.keys(items));
 var counter = 0;
 
 function incrementCounter() {
@@ -346,6 +347,14 @@ function loadImages() {
     ratio = ruby.width / ruby.height;
     ruby.width = ratio * 200;
     ruby.height = 200;
+    incrementCounter();
+  }
+  coal = document.createElement("img");
+  coal.src = "/images/coal.png";
+  coal.onload = () => {
+    ratio = coal.width / coal.height;
+    coal.width = ratio * 200;
+    coal.height = 200;
     incrementCounter();
   }
   fenceHorizontal = document.createElement("img");

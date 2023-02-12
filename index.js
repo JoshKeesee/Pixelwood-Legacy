@@ -15,7 +15,7 @@ const io = new Server(httpServer, {
 const port = process.env.PORT || 3000;
 const players = {};
 var chestItems = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-const ores = ["emerald", "diamond", "gold", "iron", "ruby"];
+const ores = ["emerald", "diamond", "gold", "iron", "ruby", "coal"];
 const plainTypes = ["tree", "small-tree", "flower", "blue-flower", "purple-flower"];
 const devs = ["13121245", "15824042", "6759741", "18760736"];
 getChestItems();
@@ -150,6 +150,8 @@ io.on("connection", (socket) => {
         scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.01;
       } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "ruby") {
         scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.0001;
+      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "coal") {
+        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.0005;
       }
 
       io.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);

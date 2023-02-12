@@ -28,6 +28,7 @@ var workbenchRecipes = {
   "ruby-axe": ["", "ruby", "ruby", "", "stick", "ruby", "", "stick", ""],
   "diamond-axe": ["", "diamond", "diamond", "", "stick", "diamond", "", "stick", ""],
   "emerald-axe": ["", "emerald", "emerald", "", "stick", "emerald", "", "stick", ""],
+  "torch": ["", "coal", "", "", "stick", "", "", "stick", ""],
 }
 
 const playerLoop = () => {
@@ -117,7 +118,7 @@ const playerLoop = () => {
         hitForce = 50;
       }
 
-      if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") && players[myId].inventory[players[myId].spot - 1].includes("pickaxe") && players[myId].useTool) {
+      if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") && players[myId].inventory[players[myId].spot - 1].includes("pickaxe") && players[myId].useTool) {
         scenes[players[myId].scene].scenery[collisions[i].id].mining -= scenes[players[myId].scene].scenery[collisions[i].id].miningSpeed * hitForce;
         if (scenes[players[myId].scene].scenery[collisions[i].id].mining < 0 && !scenes[players[myId].scene].scenery[collisions[i].id].mined) {
           scenes[players[myId].scene].scenery[collisions[i].id].mining = 0;
@@ -138,7 +139,7 @@ const playerLoop = () => {
           }
         }
         socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
-      } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
+      } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
         if (!scenes[players[myId].scene].scenery[collisions[i].id].mined) {
           for (var x = 0; x < Object.keys(players).length; x++) {
             const player = players[Object.keys(players)[x]];
@@ -223,7 +224,7 @@ const playerLoop = () => {
             } else if (movement.use) {
               toggleWorkbench();
             }
-          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
+          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
             players[myId].y = collisions[i].y - (frameheight / scale);
           }
         }
@@ -240,7 +241,7 @@ const playerLoop = () => {
             } else if (movement.use) {
               toggleWorkbench();
             }
-          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
+          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
             players[myId].y = collisions[i].y + collisions[i].h;
           }
         }
@@ -257,7 +258,7 @@ const playerLoop = () => {
             } else if (movement.use) {
               toggleWorkbench();
             }
-          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
+          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
             players[myId].x = collisions[i].x + collisions[i].w;
           }
         }
@@ -274,7 +275,7 @@ const playerLoop = () => {
             } else if (movement.use) {
               toggleWorkbench();
             }
-          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby") {
+          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
             players[myId].x = collisions[i].x - (framewidth / scale);
           }
         }
