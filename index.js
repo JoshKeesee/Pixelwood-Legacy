@@ -72,6 +72,9 @@ io.on("connection", (socket) => {
 		yVel: 0,
 		w: 100,
 		h: 125,
+    health: 100,
+    kills: 0,
+    lastTouched: null,
 		speed: 1,
 		scene: 1,
     cutScene: 0,
@@ -116,6 +119,43 @@ io.on("connection", (socket) => {
 	};
 
 	socket.broadcast.emit("newPlayer", players[socket.id]);
+
+  socket.on("respawn", () => {
+    players[players[socket.id].lastTouched].kills++;
+    socket.to(players[socket.id].lastTouched).emit("updateKills", players[players[socket.id].lastTouched].kills);
+    
+    players[socket.id] = {
+  		x: 5 * 200 - 400 / 4,
+  		y: 0,
+  		xVel: 0,
+  		yVel: 0,
+  		w: 100,
+  		h: 125,
+      health: 100,
+      kills: players[socket.id].kills,
+      lastTouched: null,
+  		speed: 1,
+  		scene: 1,
+      cutScene: players[socket.id].cutScene,
+  		id: socket.id,
+  		currFrame: 0,
+  		costumeY: 0,
+  		inBed: false,
+  		chestOpen: false,
+  		useTool: false,
+  		torch: 0,
+      rotate: 0,
+  		spot: 1,
+  		inventory: players[socket.id].inventory,
+      backpack: players[socket.id].backpack,
+  		dbId: players[socket.id].dbId,
+  		name: players[socket.id].name,
+  		devMode: false,
+  		ready: true,
+  	};
+
+    socket.emit("playerMoved", players[socket.id]);
+  });
 
 	socket.on("chestItems", async (data) => {
 		chestItems = data;
@@ -213,6 +253,12 @@ io.on("connection", (socket) => {
       socket.broadcast.emit("updateTrees", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     }
 	});
+
+  socket.on("hitPlayer", (data) => {
+    players[data[1]] = data[0];
+    
+    socket.to(data[1]).emit("hitPlayer", players[data[1]]);
+  });
 
 	socket.on("disconnect", async () => {
     const player = players[socket.id];

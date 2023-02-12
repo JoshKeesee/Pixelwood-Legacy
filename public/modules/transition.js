@@ -67,5 +67,11 @@ function doneLoading() {
   tutorial[17] = new Cutscene("...the number keys to change your inventory slot...", "typeWriter");
   tutorial[18] = new Cutscene("...the C key to access your backpack...", "typeWriter");
   tutorial[19] = new Cutscene("...and the enter key to quickly open chat.", "typeWriter");
+  if (players[myId].cutScene > tutorial.length - 1) {
+    $(".scene").fadeOut(0);
+    players[myId].ready = true;
+    allowedToMove = true;
+    return;
+  }
   nextScene();
 }

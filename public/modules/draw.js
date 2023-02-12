@@ -103,6 +103,15 @@ function animate() {
       type: "player",
       id: id,
     };
+    if (id !== myId) {
+      collisions[collisions.length] = {
+        x: players[id].x,
+        y: players[id].y,
+        h: frameheight / scale,
+        type: "player",
+        id: id,
+      };
+    }
     i++;
   });
 
@@ -492,11 +501,19 @@ function animate() {
     } else if (object.type === "player") {
       var player = players[object.id];
       if (player.devMode && players[myId].devMode && player.scene === players[myId].scene) {
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "red";
+        ctx.fillRect(player.x, player.y - 15, framewidth / scale, 15);
+        ctx.fillStyle = "green";
+        ctx.fillRect(player.x, player.y - 15, (player.health / 100) * (framewidth / scale), 15);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(player.x, player.y - 15, framewidth / scale, 15);
+        
         ctx.textAlign = "center";
         ctx.font = "25px pixel";
         ctx.fillStyle = "white";
         ctx.textRendering = "optimizeLegibility"
-        ctx.fillText(player.name + " [Dev]", player.x + framewidth / scale / 2, player.y);
+        ctx.fillText(player.name + " [Dev]", player.x + framewidth / scale / 2, player.y - 20);
 
         if (player.inventory[player.spot - 1] !== "" && player.useTool) {
           var xCord;
@@ -530,11 +547,19 @@ function animate() {
           ctx.drawImage(costume, (0 * framewidth) / scale, ((frameheight * player.costumeY) + 75 + (100 * player.costumeY)) / scale, framewidth / scale, frameheight / scale, player.x, player.y, framewidth / scale, frameheight / scale);
         }
       } else if (players[myId].devMode && player.dbId === user.id) {
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "red";
+        ctx.fillRect(player.x, player.y - 15, framewidth / scale, 15);
+        ctx.fillStyle = "green";
+        ctx.fillRect(player.x, player.y - 15, (player.health / 100) * (framewidth / scale), 15);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(player.x, player.y - 15, framewidth / scale, 15);
+        
         ctx.textAlign = "center";
         ctx.font = "25px pixel";
         ctx.fillStyle = "white";
         ctx.textRendering = "optimizeLegibility"
-        ctx.fillText(player.name + " [Dev]", player.x + framewidth / scale / 2, player.y);
+        ctx.fillText(player.name + " [Dev]", player.x + framewidth / scale / 2, player.y - 20);
 
         if (player.inventory[player.spot - 1] !== "" && player.useTool) {
           var xCord;
@@ -568,11 +593,19 @@ function animate() {
           ctx.drawImage(costume, (0 * framewidth) / scale, ((frameheight * player.costumeY) + 75 + (100 * player.costumeY)) / scale, framewidth / scale, frameheight / scale, player.x, player.y, framewidth / scale, frameheight / scale);
         }
       } else if (player.scene === players[myId].scene && !player.devMode && (players[myId].ready || player.id === players[myId].id)) {
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "red";
+        ctx.fillRect(player.x, player.y - 15, framewidth / scale, 15);
+        ctx.fillStyle = "green";
+        ctx.fillRect(player.x, player.y - 15, (player.health / 100) * (framewidth / scale), 15);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(player.x, player.y - 15, framewidth / scale, 15);
+        
         ctx.textAlign = "center";
         ctx.font = "25px pixel";
         ctx.fillStyle = "white";
         ctx.textRendering = "optimizeLegibility"
-        ctx.fillText(player.name, player.x + framewidth / scale / 2, player.y);
+        ctx.fillText(player.name, player.x + framewidth / scale / 2, player.y - 20);
 
         if (player.inventory[player.spot - 1] !== "" && player.useTool) {
           var xCord;

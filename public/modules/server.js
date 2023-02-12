@@ -54,6 +54,8 @@ function checkForAnimate() {
     		yVel: 0,
     		w: 100,
     		h: 125,
+        health: 100,
+        kills: 0,
     		speed: 1,
     		scene: 1,
         cutScene: 0,
@@ -147,6 +149,16 @@ socket.on("update chestItems", (data) => {
 
 socket.on("playerMoved", (player) => {
   players[player.id] = player;
+});
+
+socket.on("hitPlayer", (player) => {
+  players[myId].xVel = player.xVel;
+  players[myId].yVel = player.yVel;
+  players[myId].health = player.health;
+});
+
+socket.on("updateKills", (kills) => {
+  players[myId].kills = kills;
 });
 
 socket.on("connect", () => {

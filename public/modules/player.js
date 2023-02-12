@@ -159,6 +159,39 @@ const playerLoop = () => {
       var hitForce = 0;
 
       if (players[myId].inventory[players[myId].spot - 1] === "") {
+        hitForce = 1;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "wooden-sword") {
+        hitForce = 2;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "gold-sword") {
+        hitForce = 4;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "iron-sword") {
+        hitForce = 8;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "ruby-sword") {
+        hitForce = 16;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "diamond-sword") {
+        hitForce = 32;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-sword") {
+        hitForce = 64;
+      }
+
+      if (collisions[i].type === "player" && (players[myId].inventory[players[myId].spot - 1].includes("sword") || players[myId].inventory[players[myId].spot - 1] === "") && players[myId].useTool) {
+        if (players[myId].costumeY === 0) {
+          players[collisions[i].id].yVel += 10;
+        } else if (players[myId].costumeY === 1) {
+          players[collisions[i].id].yVel -= 10;
+        } else if (players[myId].costumeY === 2) {
+          players[collisions[i].id].xVel -= 10;
+        } else if (players[myId].costumeY === 3) {
+          players[collisions[i].id].xVel += 10;
+        }
+        players[collisions[i].id].health -= hitForce;
+
+        socket.emit("hitPlayer", [players[collisions[i].id], collisions[i].id]);
+      }
+
+      var hitForce = 0;
+
+      if (players[myId].inventory[players[myId].spot - 1] === "") {
         hitForce = 1/8;
         if (collisions[i].type === "tree" || collisions[i].type === "small-tree") {
           collidingWithTree = true;
@@ -215,7 +248,7 @@ const playerLoop = () => {
         }
       }
       
-      if (collisions[i].type !== "ladder" && collisions[i].type !== "exit" && collisions[i].type !== "bed" && collisions[i].type !== "change" && collisions[i].type !== "tree" && collisions[i].type !== "small-tree") {
+      if (collisions[i].type !== "ladder" && collisions[i].type !== "exit" && collisions[i].type !== "bed" && collisions[i].type !== "change" && collisions[i].type !== "tree" && collisions[i].type !== "small-tree" && collisions[i].type !== "player") {
         if (colT(players[myId], collisions[i])) {
           players[myId].y = collisions[i].y - (frameheight / scale) - 2;
           if ((collisions[i].type === "furnace" || collisions[i].type === "chest" || collisions[i].type === "workbench") && players[myId].costumeY === 0) {
@@ -380,6 +413,10 @@ const playerLoop = () => {
     players[myId].costumeY = 2;
   } else if (movement.right) {
     players[myId].costumeY = 3;
+  }
+
+  if (players[myId].health <= 0) {
+    socket.emit("respawn");
   }
 };
 
