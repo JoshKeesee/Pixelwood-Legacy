@@ -150,8 +150,11 @@ io.on("connection", (socket) => {
         scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.01;
       } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "ruby") {
         scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.0001;
+<<<<<<< HEAD
       } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "coal") {
         scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.0005;
+=======
+>>>>>>> origin/main
       }
 
       io.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
