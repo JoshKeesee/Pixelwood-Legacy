@@ -66,7 +66,7 @@ function checkForAnimate() {
     		torch: 0,
         rotate: 0,
     		spot: 1,
-    		inventory: ["wooden-sword", "wooden-pickaxe", "coal", "torch", "", "", "", ""],
+    		inventory: ["", "", "", "", "", "", "", ""],
         backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
     		dbId: null,
     		name: "Offline",
