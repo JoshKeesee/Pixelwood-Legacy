@@ -547,6 +547,7 @@ function takeOutputFromWorkbench() {
   }
 
   document.querySelector(".workbench .output").innerHTML = "";
+  updateBackpack();
 }
 
 function useTool() {
