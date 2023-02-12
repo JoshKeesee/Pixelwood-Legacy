@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
 		torch: 0,
     rotate: 0,
 		spot: 1,
-		inventory: ["coal", "torch", "", "", "", "", "", ""],
+		inventory: ["", "", "", "", "", "", "", ""],
     backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
 		dbId: null,
 		name: randomName(),
