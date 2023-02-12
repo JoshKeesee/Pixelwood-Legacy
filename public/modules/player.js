@@ -137,6 +137,8 @@ const playerLoop = () => {
               }
             }
           }
+
+          updateBackpack();
         }
         socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
       } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
@@ -194,6 +196,8 @@ const playerLoop = () => {
               }
             }
           }
+
+          updateBackpack();
         }
         socket.emit("updateTrees", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
       } else if (collisions[i].type === "tree" || collisions[i].type === "small-tree") {
@@ -415,6 +419,16 @@ function toggleBackpack() {
   usingUtility = !usingUtility;
   $(".backpack").slideToggle(200);
   saveGame();
+}
+
+function updateBackpack() {
+  for (var i = 0; i < document.querySelectorAll(".backpack .item").length; i++) {
+    if (players[myId].backpack[i] !== "") {
+      document.querySelectorAll(".backpack .item")[i].innerHTML = "<img id='" + players[myId].backpack[i] + "' src='" + items[players[myId].backpack[i]].src + "'>";
+    } else {
+      document.querySelectorAll(".backpack .item")[i].innerHTML = "";
+    }
+  }
 }
 
 function selectItemFromChest(item) {
