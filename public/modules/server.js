@@ -69,7 +69,7 @@ function checkForAnimate() {
     		inventory: ["", "", "", "", "", "", "", ""],
         backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
     		dbId: null,
-    		name: randomName(),
+    		name: "Offline",
     		devMode: false,
     		ready: false,
     	};
