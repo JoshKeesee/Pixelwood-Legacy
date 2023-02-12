@@ -57,7 +57,7 @@ function checkForAnimate() {
     		speed: 1,
     		scene: 1,
         cutScene: 0,
-    		id: socket.id,
+    		id: myId,
     		currFrame: 0,
     		costumeY: 0,
     		inBed: false,
