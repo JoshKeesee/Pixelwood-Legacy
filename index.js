@@ -140,6 +140,18 @@ io.on("connection", (socket) => {
         mined: false,
       }
 
+      if (scenes[players[socket.id].scene].scenery[data[1]].type === "diamond") {
+        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.00001;
+      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "emerald") {
+        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.000009;
+      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "iron") {
+        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.001;
+      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "gold") {
+        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.01;
+      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "ruby") {
+        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.0001;
+      }
+
       io.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     } else {
 		  scenes[players[socket.id].scene].scenery[data[1]] = data[0];
