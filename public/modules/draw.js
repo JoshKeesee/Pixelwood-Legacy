@@ -307,6 +307,19 @@ function animate() {
           type: "iron",
         }
       }
+    } else if (object.type === "coal") {
+      height = 0;
+      if (!object.mined) {
+        collisions[collisions.length] = {
+          x: object.x,
+          y: object.y,
+          w: 200,
+          h: 200,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
+          mining: object.mining,
+          type: "coal",
+        }
+      }
     } else if (object.type === "fountain") {
       height = fountainHeight / 2;
       collisions[collisions.length] = {
@@ -443,6 +456,10 @@ function animate() {
     } else if (object.type === "iron") {
       ctx.globalAlpha = object.mining;
       ctx.drawImage(iron, object.x, object.y, iron.width, iron.height);
+      ctx.globalAlpha = 1.0;
+    } else if (object.type === "coal") {
+      ctx.globalAlpha = object.mining;
+      ctx.drawImage(coal, object.x, object.y, coal.width, coal.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "fountain") {
       ctx.drawImage(fountain, fountainFrame * fountainWidth, 0, fountainWidth, fountainHeight, object.x, object.y, fountainWidth / 2, fountainHeight / 2);
