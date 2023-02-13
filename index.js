@@ -121,8 +121,8 @@ io.on("connection", (socket) => {
 	socket.broadcast.emit("newPlayer", players[socket.id]);
 
   socket.on("respawn", () => {
-    players[players[socket.id].lastTouched].kills++;
-    socket.to(players[socket.id].lastTouched).emit("updateKills", players[players[socket.id].lastTouched].kills);
+    // players[players[socket.id].lastTouched].kills++;
+    // socket.to(players[socket.id].lastTouched).emit("updateKills", players[players[socket.id].lastTouched].kills);
     
     players[socket.id] = {
   		x: 5 * 200 - 400 / 4,

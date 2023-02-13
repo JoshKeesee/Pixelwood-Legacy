@@ -163,15 +163,15 @@ const playerLoop = () => {
       } else if (players[myId].inventory[players[myId].spot - 1] === "wooden-sword") {
         hitForce = 2;
       } else if (players[myId].inventory[players[myId].spot - 1] === "gold-sword") {
-        hitForce = 4;
+        hitForce = 3;
       } else if (players[myId].inventory[players[myId].spot - 1] === "iron-sword") {
-        hitForce = 8;
+        hitForce = 4;
       } else if (players[myId].inventory[players[myId].spot - 1] === "ruby-sword") {
-        hitForce = 16;
+        hitForce = 6;
       } else if (players[myId].inventory[players[myId].spot - 1] === "diamond-sword") {
-        hitForce = 32;
+        hitForce = 8;
       } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-sword") {
-        hitForce = 64;
+        hitForce = 10;
       }
 
       if (collisions[i].type === "player" && (players[myId].inventory[players[myId].spot - 1].includes("sword") || players[myId].inventory[players[myId].spot - 1] === "") && players[myId].useTool) {
@@ -414,10 +414,6 @@ const playerLoop = () => {
   } else if (movement.right) {
     players[myId].costumeY = 3;
   }
-
-  if (players[myId].health <= 0) {
-    socket.emit("respawn");
-  }
 };
 
 const loopFrames = () => {
@@ -429,6 +425,10 @@ const loopFrames = () => {
     }
   } else {
     players[myId].currFrame = 0;
+  }
+
+  if (players[myId].health <= 0) {
+    socket.emit("respawn");
   }
 };
 
