@@ -26,7 +26,7 @@ const { instrument } = require("@socket.io/admin-ui");
 
 instrument(io, {
   auth: false,
-  mode: "production",
+  mode: "development",
 });
 
 function getChestItems() {
