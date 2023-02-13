@@ -103,7 +103,7 @@ function animate() {
       type: "player",
       id: id,
     };
-    if (id !== myId) {
+    if (id !== myId && players[id].scene === players[myId].scene) {
       collisions[collisions.length] = {
         x: players[id].x,
         y: players[id].y,

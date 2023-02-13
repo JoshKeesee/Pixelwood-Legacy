@@ -145,7 +145,7 @@ io.on("connection", (socket) => {
   		useTool: false,
   		torch: 0,
       rotate: 0,
-  		spot: 1,
+  		spot: players[socket.id].spot,
   		inventory: players[socket.id].inventory,
       backpack: players[socket.id].backpack,
   		dbId: players[socket.id].dbId,
