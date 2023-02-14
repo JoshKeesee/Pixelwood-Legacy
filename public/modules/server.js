@@ -35,7 +35,7 @@ socket.on("currentPlayers", (data) => {
     if (user) {
       players[myId].name = user.name;
     }
-    
+
     if (connected) {
       socket.emit("playerMovement", players[myId]);
     }
@@ -48,33 +48,33 @@ function checkForAnimate() {
   if (readyToAnimate) {
     if (!connected) {
       players[myId] = {
-    		x: 5 * 200 - 400 / 4,
-    		y: 0,
-    		xVel: 0,
-    		yVel: 0,
-    		w: 100,
-    		h: 125,
+        x: 5 * 200 - 400 / 4,
+        y: 0,
+        xVel: 0,
+        yVel: 0,
+        w: 100,
+        h: 125,
         health: 100,
         kills: 0,
-    		speed: 1,
-    		scene: 1,
+        speed: 1,
+        scene: 1,
         cutScene: 0,
-    		id: myId,
-    		currFrame: 0,
-    		costumeY: 0,
-    		inBed: false,
-    		chestOpen: false,
-    		useTool: false,
-    		torch: 0,
+        id: myId,
+        currFrame: 0,
+        costumeY: 0,
+        inBed: false,
+        chestOpen: false,
+        useTool: false,
+        torch: 0,
         rotate: 0,
-    		spot: 1,
-    		inventory: ["", "", "", "", "", "", "", ""],
+        spot: 1,
+        inventory: ["", "", "", "", "", "", "", ""],
         backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    		dbId: null,
-    		name: "Offline",
-    		devMode: false,
-    		ready: false,
-    	};
+        dbId: null,
+        name: "Offline",
+        devMode: false,
+        ready: false,
+      };
 
       scenes = offlineScenes;
     }
@@ -95,7 +95,7 @@ function saveGame() {
     }, 500);
     $(".manual-save").fadeOut();
     socket.emit("gameSave", players[myId]);
-  
+
     setTimeout(() => {
       $(".game-save").slideUp();
       setTimeout(() => {
@@ -126,6 +126,14 @@ socket.on("playerData", (player) => {
 
 socket.on("newPlayer", (player) => {
   players[player.id] = player;
+});
+
+socket.on("hitPlayer", (player) => {
+  players[myId] = player;
+});
+
+socket.on("addKill", (kills) => {
+  players[myId].kills = kills;
 });
 
 socket.on("updateOres", (data) => {

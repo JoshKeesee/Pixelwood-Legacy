@@ -33,7 +33,7 @@ var workbenchRecipes = {
 
 const playerLoop = () => {
   playerData = requestAnimationFrame(playerLoop);
-  
+
   if (players[myId].devMode) {
     if (!movement.speed) {
       players[myId].speed = 3;
@@ -43,7 +43,7 @@ const playerLoop = () => {
   } else {
     players[myId].speed = 1.5;
   }
-  
+
   CAMERAX += smoothing * ((players[myId].x - canvas.width / 2 + ((framewidth / 2) / scale)) - CAMERAX);
   CAMERAY += smoothing * ((players[myId].y - canvas.height / 2 + ((frameheight / 2) / scale)) - CAMERAY);
 
@@ -51,20 +51,20 @@ const playerLoop = () => {
     if (CAMERAX < 0) {
       CAMERAX = 0;
     }
-  
+
     if (CAMERAX + canvas.width > scenes[players[myId].scene].width * grass.width) {
       CAMERAX = scenes[players[myId].scene].width * grass.width - canvas.width;
     }
-  
+
     if (CAMERAY < 0) {
       CAMERAY = 0;
     }
-  
+
     if (CAMERAY + canvas.height > scenes[players[myId].scene].height * grass.height) {
       CAMERAY = scenes[players[myId].scene].height * grass.height - canvas.height;
     }
   }
-  
+
   players[myId].xVel *= 0.8;
   players[myId].yVel *= 0.8;
 
@@ -145,9 +145,9 @@ const playerLoop = () => {
         if (!scenes[players[myId].scene].scenery[collisions[i].id].mined) {
           for (var x = 0; x < Object.keys(players).length; x++) {
             const player = players[Object.keys(players)[x]];
-  
+
             if (colliding(player, collisions[i]) && player.id !== myId) break;
-  
+
             if (x === Object.keys(players).length - 1) {
               scenes[players[myId].scene].scenery[collisions[i].id].mining = 1;
               socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
@@ -192,22 +192,22 @@ const playerLoop = () => {
       var hitForce = 0;
 
       if (players[myId].inventory[players[myId].spot - 1] === "") {
-        hitForce = 1/8;
+        hitForce = 1 / 8;
         if (collisions[i].type === "tree" || collisions[i].type === "small-tree") {
           collidingWithTree = true;
         }
       } else if (players[myId].inventory[players[myId].spot - 1] === "wooden-axe") {
-        hitForce = 1/4;
+        hitForce = 1 / 4;
       } else if (players[myId].inventory[players[myId].spot - 1] === "gold-axe") {
-        hitForce = 1/2;
+        hitForce = 1 / 2;
       } else if (players[myId].inventory[players[myId].spot - 1] === "iron-axe") {
-        hitForce = 3/4;
+        hitForce = 3 / 4;
       } else if (players[myId].inventory[players[myId].spot - 1] === "ruby-axe") {
         hitForce = 1;
       } else if (players[myId].inventory[players[myId].spot - 1] === "diamond-axe") {
-        hitForce = 1 + 1/4;
+        hitForce = 1 + 1 / 4;
       } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-axe") {
-        hitForce = 1 + 1/2;
+        hitForce = 1 + 1 / 2;
       }
 
       if ((collisions[i].type === "tree" || collisions[i].type === "small-tree") && (players[myId].inventory[players[myId].spot - 1].includes("axe") || players[myId].inventory[players[myId].spot - 1] === "") && players[myId].useTool) {
@@ -237,9 +237,9 @@ const playerLoop = () => {
         if (!scenes[players[myId].scene].scenery[collisions[i].id].mined) {
           for (var x = 0; x < Object.keys(players).length; x++) {
             const player = players[Object.keys(players)[x]];
-  
+
             if (colliding(player, collisions[i]) && player.id !== myId) break;
-  
+
             if (x === Object.keys(players).length - 1) {
               scenes[players[myId].scene].scenery[collisions[i].id].mining = 1;
               socket.emit("updateTrees", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
@@ -247,7 +247,7 @@ const playerLoop = () => {
           };
         }
       }
-      
+
       if (collisions[i].type !== "ladder" && collisions[i].type !== "exit" && collisions[i].type !== "bed" && collisions[i].type !== "change" && collisions[i].type !== "tree" && collisions[i].type !== "small-tree" && collisions[i].type !== "player") {
         if (colT(players[myId], collisions[i])) {
           players[myId].y = collisions[i].y - (frameheight / scale) - 2;
@@ -419,7 +419,7 @@ const playerLoop = () => {
 const loopFrames = () => {
   if (movement.up || movement.down || movement.left || movement.right) {
     players[myId].currFrame++;
-  
+
     if (players[myId].currFrame > 3) {
       players[myId].currFrame = 0;
     }
@@ -429,6 +429,35 @@ const loopFrames = () => {
 
   if (players[myId].health <= 0) {
     socket.emit("respawn");
+    players[socket.id] = {
+      x: 5 * 200 - 400 / 4,
+      y: 0,
+      xVel: 0,
+      yVel: 0,
+      w: 100,
+      h: 125,
+      health: 100,
+      kills: players[socket.id].kills,
+      lastTouched: null,
+      speed: 1,
+      scene: 1,
+      cutScene: players[socket.id].cutScene,
+      id: socket.id,
+      currFrame: 0,
+      costumeY: 0,
+      inBed: false,
+      chestOpen: false,
+      useTool: false,
+      torch: 0,
+      rotate: 0,
+      spot: players[socket.id].spot,
+      inventory: players[socket.id].inventory,
+      backpack: players[socket.id].backpack,
+      dbId: players[socket.id].dbId,
+      name: players[socket.id].name,
+      devMode: false,
+      ready: true,
+    };
   }
 };
 
@@ -540,7 +569,7 @@ function selectItemFromWorkbench(item) {
   for (var i = 0; i < Object.keys(workbenchRecipes).length; i++) {
     if (recipeFound) break;
     for (var x = 0; x < workbenchRecipes[Object.keys(workbenchRecipes)[i]].length; x++) {
-      if (document.querySelectorAll(".workbench .input .item")[x].innerHTML === "") { 
+      if (document.querySelectorAll(".workbench .input .item")[x].innerHTML === "") {
         if (workbenchRecipes[Object.keys(workbenchRecipes)[i]][x] !== "") {
           document.querySelector(".workbench .output").innerHTML = "";
           break;

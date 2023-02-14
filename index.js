@@ -30,14 +30,14 @@ instrument(io, {
 });
 
 function getChestItems() {
-	db.list().then(async (keys) => {
-		if (keys.includes("chestItems")) {
-			chestItems = await db.get("chestItems");
-			chestItems = JSON.parse(chestItems);
-		} else {
-			await db.set("chestItems", JSON.stringify(chestItems));
-		}
-	});
+  db.list().then(async (keys) => {
+    if (keys.includes("chestItems")) {
+      chestItems = await db.get("chestItems");
+      chestItems = JSON.parse(chestItems);
+    } else {
+      await db.set("chestItems", JSON.stringify(chestItems));
+    }
+  });
 }
 
 app.use(favicon(__dirname + "/public/images/pixelwood-logo.png"));
@@ -49,11 +49,11 @@ authMiddleware(app, { customPage: __dirname + "/views/index.ejs" });
 authMiddleware(io);
 
 app.get("/", (req, res) => {
-	const { user } = req;
-	return res.render("index", {
-		user,
-		dev: devs.includes(user?.id)
-	});
+  const { user } = req;
+  return res.render("index", {
+    user,
+    dev: devs.includes(user?.id)
+  });
 });
 
 app.get("/admin", (req, res) => {
@@ -65,113 +65,84 @@ app.get("/admin", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-	players[socket.id] = {
-		x: 5 * 200 - 400 / 4,
-		y: 0,
-		xVel: 0,
-		yVel: 0,
-		w: 100,
-		h: 125,
+  players[socket.id] = {
+    x: 5 * 200 - 400 / 4,
+    y: 0,
+    xVel: 0,
+    yVel: 0,
+    w: 100,
+    h: 125,
     health: 100,
     kills: 0,
     lastTouched: null,
-		speed: 1,
-		scene: 1,
+    speed: 1,
+    scene: 1,
     cutScene: 0,
-		id: socket.id,
-		currFrame: 0,
-		costumeY: 0,
-		inBed: false,
-		chestOpen: false,
-		useTool: false,
-		torch: 0,
+    id: socket.id,
+    currFrame: 0,
+    costumeY: 0,
+    inBed: false,
+    chestOpen: false,
+    useTool: false,
+    torch: 0,
     rotate: 0,
-		spot: 1,
-		inventory: ["", "", "", "", "", "", "", ""],
+    spot: 1,
+    inventory: ["", "", "", "", "", "", "", ""],
     backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-		dbId: null,
-		name: randomName(),
-		devMode: false,
-		ready: false,
-	};
+    dbId: null,
+    name: randomName(),
+    devMode: false,
+    ready: false,
+  };
 
   getPlayerData();
 
-	async function getPlayerData() {
-		if (!socket.user?.id) {
+  async function getPlayerData() {
+    if (!socket.user?.id) {
       socket.emit("currentPlayers", [players, scenes, chestItems]);
       return;
     }
-		const keys = await db.list();
-		if (keys.includes(socket.user.id)) {
+    const keys = await db.list();
+    if (keys.includes(socket.user.id)) {
       socket.emit("currentPlayers", [players, scenes, chestItems]);
-			let player = await db.get(socket.user.id);
+      let player = await db.get(socket.user.id);
       if (!player) return;
-			player = JSON.parse(player);
-			player.dbId = socket.user.id;
+      player = JSON.parse(player);
+      player.dbId = socket.user.id;
       player.id = socket.id;
       if (player.inventory.includes("sword") || player.inventory.includes("pickaxe")) {
         player.inventory = ["coal", "torch", "", "", "", "", "", ""];
       }
       players[socket.id] = player;
-			socket.emit("playerData", players[socket.id]);
-		}
-	};
+      socket.emit("playerData", players[socket.id]);
+    }
+  };
 
-	socket.broadcast.emit("newPlayer", players[socket.id]);
+  socket.broadcast.emit("newPlayer", players[socket.id]);
 
   socket.on("respawn", () => {
-    // players[players[socket.id].lastTouched].kills++;
-    // socket.to(players[socket.id].lastTouched).emit("updateKills", players[players[socket.id].lastTouched].kills);
-    
-    players[socket.id] = {
-  		x: 5 * 200 - 400 / 4,
-  		y: 0,
-  		xVel: 0,
-  		yVel: 0,
-  		w: 100,
-  		h: 125,
-      health: 100,
-      kills: players[socket.id].kills,
-      lastTouched: null,
-  		speed: 1,
-  		scene: 1,
-      cutScene: players[socket.id].cutScene,
-  		id: socket.id,
-  		currFrame: 0,
-  		costumeY: 0,
-  		inBed: false,
-  		chestOpen: false,
-  		useTool: false,
-  		torch: 0,
-      rotate: 0,
-  		spot: players[socket.id].spot,
-  		inventory: players[socket.id].inventory,
-      backpack: players[socket.id].backpack,
-  		dbId: players[socket.id].dbId,
-  		name: players[socket.id].name,
-  		devMode: false,
-  		ready: true,
-  	};
+    if (!players[socket.id]?.lastTouched) return;
+    players[players[socket.id].lastTouched].kills++;
+    socket.to(players[socket.id].lastTouched).emit("updateKills", players[players[socket.id].lastTouched].kills);
 
-    socket.emit("playerMoved", players[socket.id]);
+    socket.to(players[socket.id].lastTouched).emit("addKill", players[players[socket.id].lastTouched].kills);
   });
 
-	socket.on("chestItems", async (data) => {
-		chestItems = data;
-		socket.broadcast.emit("update chestItems", chestItems);
-		await db.set("chestItems", JSON.stringify(chestItems));
-		if (!socket.user?.id) return;
-		await db.set(socket.user.id, JSON.stringify(players[socket.id]));
-	});
+  socket.on("chestItems", async (data) => {
+    chestItems = data;
+    socket.broadcast.emit("update chestItems", chestItems);
+    await db.set("chestItems", JSON.stringify(chestItems));
+    if (!socket.user?.id) return;
+    await db.set(socket.user.id, JSON.stringify(players[socket.id]));
+  });
 
-	socket.on("updateOres", (data) => {
+  socket.on("updateOres", (data) => {
     if (scenes[players[socket.id].scene].type !== "cave") return;
     if (!data[0]?.mined) return;
     if (data[0].mined) {
       var xCord = Math.floor(Math.random() * scenes[players[socket.id].scene].width);
       var yCord = Math.floor(Math.random() * scenes[players[socket.id].scene].height);
-      
+
       scenes[players[socket.id].scene].scenery[data[1]] = {
         x: xCord * 200,
         y: yCord * 200,
@@ -196,10 +167,10 @@ io.on("connection", (socket) => {
 
       io.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     } else {
-		  scenes[players[socket.id].scene].scenery[data[1]] = data[0];
+      scenes[players[socket.id].scene].scenery[data[1]] = data[0];
       socket.broadcast.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     }
-	});
+  });
 
   socket.on("updateTrees", (data) => {
     if (scenes[players[socket.id].scene].type !== "plains") return;
@@ -212,7 +183,7 @@ io.on("connection", (socket) => {
         xCord = Math.floor(Math.random() * 1600);
         yCord = Math.floor(Math.random() * 1600);
       }
-  
+
       if (players[socket.id].scene === 0 && xCord > 1000 && yCord < 1000) {
         xCord = Math.floor(Math.random() * 1600);
         yCord = Math.floor(Math.random() * 600) + 1000;
@@ -222,7 +193,7 @@ io.on("connection", (socket) => {
         xCord = Math.floor(Math.random() * 1200);
         yCord = Math.floor(Math.random() * 600) + 1000;
       }
-      
+
       if (players[socket.id].scene === 3 && xCord < 1200 && yCord < 1100) {
         xCord = Math.floor(Math.random() * 600) + 1200;
         yCord = Math.floor(Math.random() * 600) + 1100;
@@ -237,7 +208,7 @@ io.on("connection", (socket) => {
         xCord = Math.floor(Math.random() * 2000);
         yCord = Math.floor(Math.random() * 600) + 1100;
       }
-      
+
       scenes[players[socket.id].scene].scenery[data[1]] = {
         x: xCord * 200,
         y: yCord * 200,
@@ -249,51 +220,52 @@ io.on("connection", (socket) => {
 
       io.emit("updateTrees", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     } else {
-		  scenes[players[socket.id].scene].scenery[data[1]] = data[0];
+      scenes[players[socket.id].scene].scenery[data[1]] = data[0];
       socket.broadcast.emit("updateTrees", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
     }
-	});
+  });
 
   socket.on("hitPlayer", (data) => {
     players[data[1]] = data[0];
-    
+    players[data[1]].lastTouched = socket.id;
+
     socket.to(data[1]).emit("hitPlayer", players[data[1]]);
   });
 
-	socket.on("disconnect", async () => {
+  socket.on("disconnect", async () => {
     const player = players[socket.id];
     delete players[socket.id];
-		io.emit("disconnected", socket.id);
-		if (!socket.user?.id) return;
-		await db.set(socket.user.id, JSON.stringify(player));
-	});
+    io.emit("disconnected", socket.id);
+    if (!socket.user?.id) return;
+    await db.set(socket.user.id, JSON.stringify(player));
+  });
 
-	socket.on("gameSave", async (player) => {
+  socket.on("gameSave", async (player) => {
     if (!player) return;
-		if (player.dbId === null) return;
+    if (player.dbId === null) return;
     players[socket.id] = player;
-		await db.set(players[socket.id].dbId, JSON.stringify(players[socket.id]));
-	});
+    await db.set(players[socket.id].dbId, JSON.stringify(players[socket.id]));
+  });
 
-	socket.on("playerMovement", (data) => {
-		players[socket.id] = data;
-		socket.broadcast.emit("playerMoved", players[socket.id]);
-	});
+  socket.on("playerMovement", (data) => {
+    players[socket.id] = data;
+    socket.broadcast.emit("playerMoved", players[socket.id]);
+  });
 
-	socket.on("chat message", (message) => {
+  socket.on("chat message", (message) => {
     if (!message) return;
     if (message === null) return;
-		io.emit("send message", [players[socket.id].name, filter.clean(message)]);
-	});
+    io.emit("send message", [players[socket.id].name, filter.clean(message)]);
+  });
 });
 
 const adjective = ["Excited", "Anxious", "Overweight", "Jumpy", "Squashed", "Broad", "Crooked", "Curved", "Deep", "Even", "Anxious", "Jumpy", "Squashed", "Broad", "Crooked", "Curved", "Deep", "Even", "Flat", "Hilly", "Jagged", "Round", "Shallow", "Square", "Steep", "Straight", "Thick", "Thin", "Cooing", "Faint", "Harsh", "Hissing", "Hushed", "Husky", "Loud", "Melodic", "Moaning", "Mute", "Noisy", "Purring", "Quiet", "Raspy", "Shrill", "Silent", "Soft", "Squeaky"];
 const object = ["Taco", "Sphere", "Watermelon", "Cheeseburger", "Spider", "Dragon", "Soda", "Watch", "Sunglasses", "T-shirt", "Purse", "Towel", "Hat", "Camera", "Photo", "Cat", "Dog"];
 
 function randomName() {
-	return adjective[Math.floor(Math.random() * adjective.length)] + object[Math.floor(Math.random() * object.length)];
+  return adjective[Math.floor(Math.random() * adjective.length)] + object[Math.floor(Math.random() * object.length)];
 }
 
 httpServer.listen(port, () => {
-	console.log(`Server listening on port ${port}`);
+  console.log(`Server listening on port ${port}`);
 });
