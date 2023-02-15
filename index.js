@@ -121,11 +121,10 @@ io.on("connection", (socket) => {
   socket.broadcast.emit("newPlayer", players[socket.id]);
 
   socket.on("respawn", () => {
-    if (!players[socket.id]?.lastTouched) return;
-    players[players[socket.id].lastTouched].kills++;
-    socket.to(players[socket.id].lastTouched).emit("updateKills", players[players[socket.id].lastTouched].kills);
+    // if (players[socket.id].lastTouched === null) return;
+    // players[players[socket.id].lastTouched].kills++;
 
-    socket.to(players[socket.id].lastTouched).emit("addKill", players[players[socket.id].lastTouched].kills);
+    // socket.to(players[socket.id].lastTouched).emit("addKill", players[players[socket.id].lastTouched].kills);
   });
 
   socket.on("chestItems", async (data) => {

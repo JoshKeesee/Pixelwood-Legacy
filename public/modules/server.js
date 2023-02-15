@@ -165,10 +165,6 @@ socket.on("hitPlayer", (player) => {
   players[myId].health = player.health;
 });
 
-socket.on("updateKills", (kills) => {
-  players[myId].kills = kills;
-});
-
 socket.on("connect", () => {
   connected = true;
   $(".connected").addClass("hidden");
