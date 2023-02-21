@@ -165,7 +165,7 @@ function animate() {
         type: "house",
       }
     } else if (object.type === "ladder") {
-      height = ladder.height;
+      height = 0;
       collisions[collisions.length] = {
         x: object.x,
         y: object.y,
