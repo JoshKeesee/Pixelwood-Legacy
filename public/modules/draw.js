@@ -683,7 +683,7 @@ function animate() {
 
   if (transition) {
     brightness += 0.2 * (1 - brightness);
-  } else if (usingUtility) {
+  } else if (usingChest || usingFurnace || usingWorkbench || usingBackpack) {
     brightness += 0.2 * (0.7 - brightness);
   } else if (players[myId].inBed) {
     $(".use").addClass("hidden");

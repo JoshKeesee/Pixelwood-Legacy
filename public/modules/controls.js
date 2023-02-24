@@ -19,27 +19,15 @@ const mouse = {
 
 function keydown(e) {
   if (!transition && allowedToMove && !chatOpen) {
-    if (e.key === "ArrowUp" || e.key === "w") {
+    if (e.key === "ArrowUp" || e.key === "w" && !(usingChest || usingFurnace || usingWorkbench || usingBackpack)) {
       movement.up = true;
-      players[myId].chestOpen = false;
-      movement.use = false;
-      usingUtility = false;
-    } else if (e.key === "ArrowDown" || e.key === "s") {
+    } else if (e.key === "ArrowDown" || e.key === "s" && !(usingChest || usingFurnace || usingWorkbench || usingBackpack)) {
       movement.down = true;
-      players[myId].chestOpen = false;
-      movement.use = false;
-      usingUtility = false;
-    } else if (e.key === "ArrowLeft" || e.key === "a") {
+    } else if (e.key === "ArrowLeft" || e.key === "a" && !(usingChest || usingFurnace || usingWorkbench || usingBackpack)) {
       movement.left = true;
-      players[myId].chestOpen = false;
-      movement.use = false;
-      usingUtility = false;
-    } else if (e.key === "ArrowRight" || e.key === "d") {
+    } else if (e.key === "ArrowRight" || e.key === "d" && !(usingChest || usingFurnace || usingWorkbench || usingBackpack)) {
       movement.right = true;
-      players[myId].chestOpen = false;
-      movement.use = false;
-      usingUtility = false;
-    } else if (e.key === "z") {
+    } else if (e.key === "z" && !(usingChest || usingFurnace || usingWorkbench || usingBackpack)) {
       if (!players[myId].useTool && connected) {
         socket.emit("playerMovement", players[myId]);
       }
@@ -98,9 +86,9 @@ function keyup(e) {
       enableChat();
       document.querySelector("#input").select();
     }
-  } else if (e.key === "x" && (players[myId].chestOpen || usingUtility)) {
+  } else if (e.key === "x" && (players[myId].chestOpen || usingChest || usingFurnace || usingWorkbench)) {
     movement.use = true;
-  } else if (e.key === "c" && usingUtility) {
+  } else if (e.key === "c" && usingBackpack) {
     toggleBackpack();
   }
 }

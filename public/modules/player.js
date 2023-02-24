@@ -2,7 +2,10 @@ $(".furnace").slideUp(0);
 $(".chest").slideUp(0);
 
 var allowedToMove = false;
-var usingUtility = false;
+var usingFurnace = false;
+var usingChest = false;
+var usingWorkbench = false;
+var usingBackpack = false;
 var collidingWithTree = false;
 
 var CAMERAX = 0;
@@ -265,7 +268,7 @@ const playerLoop = () => {
               toggleFurnace();
             } else if (movement.use && collisions[i].type === "chest") {
               toggleChest();
-            } else if (movement.use) {
+            } else if (movement.use && collisions[i].type === "workbench") {
               toggleWorkbench();
             }
           } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal" || collisions[i].type === "platinum") {
@@ -282,7 +285,7 @@ const playerLoop = () => {
               toggleFurnace();
             } else if (movement.use && collisions[i].type === "chest") {
               toggleChest();
-            } else if (movement.use) {
+            } else if (movement.use && collisions[i].type === "workbench") {
               toggleWorkbench();
             }
           } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal" || collisions[i].type === "platinum") {
@@ -299,7 +302,7 @@ const playerLoop = () => {
               toggleFurnace();
             } else if (movement.use && collisions[i].type === "chest") {
               toggleChest();
-            } else if (movement.use) {
+            } else if (movement.use && collisions[i].type === "workbench") {
               toggleWorkbench();
             }
           } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal" || collisions[i].type === "platinum") {
@@ -312,11 +315,11 @@ const playerLoop = () => {
           if ((collisions[i].type === "furnace" || collisions[i].type === "chest" || collisions[i].type === "workbench") && players[myId].costumeY === 3) {
             players[myId].x = collisions[i].x - (framewidth / scale);
             $(".use").removeClass("hidden");
-            if (movement.use && collisions[i].type === "furnace" && !players[myId].chestOpen) {
+            if (movement.use && collisions[i].type === "furnace" && !(players[myId].chestOpen || usingChest || usingBackpack || usingWorkbench)) {
               toggleFurnace();
-            } else if (movement.use && collisions[i].type === "chest") {
+            } else if (movement.use && collisions[i].type === "chest" && !(usingWorkbench || usingBackpack || usingFurnace)) {
               toggleChest();
-            } else if (movement.use) {
+            } else if (movement.use && collisions[i].type === "workbench" && !(players[myId].chestOpen || usingChest || usingBackpack || usingFurnace)) {
               toggleWorkbench();
             }
           } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal" || collisions[i].type === "platinum") {
@@ -400,7 +403,7 @@ const playerLoop = () => {
     $(".usetool").addClass("hidden");
   }
 
-  if (usingUtility) {
+  if (usingChest || usingFurnace || usingWorkbench || usingBackpack) {
     $(".use .text").html("CLOSE(X)");
   } else {
     $(".use .text").html("USE(X)");
@@ -470,26 +473,26 @@ const loopFrames = () => {
 
 function toggleFurnace() {
   allowedToMove = !allowedToMove;
-  usingUtility = !usingUtility;
+  usingFurnace = !usingFurnace;
   $(".furnace").slideToggle(200);
 }
 
 function toggleChest() {
   players[myId].chestOpen = !players[myId].chestOpen;
   allowedToMove = !allowedToMove;
-  usingUtility = !usingUtility;
+  usingChest = !usingChest;
   $(".chest").slideToggle(200);
 }
 
 function toggleWorkbench() {
   allowedToMove = !allowedToMove;
-  usingUtility = !usingUtility;
+  usingWorkbench = !usingWorkbench;
   $(".workbench").slideToggle(200);
 }
 
 function toggleBackpack() {
   allowedToMove = !allowedToMove;
-  usingUtility = !usingUtility;
+  usingBackpack = !usingBackpack;
   $(".backpack").slideToggle(200);
   saveGame();
 }
