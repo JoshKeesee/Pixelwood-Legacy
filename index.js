@@ -5,17 +5,25 @@ const app = express();
 const favicon = require("serve-favicon");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
+const server = createServer(app);
+const io = new Server(server, {
   cors: {
     origin: ["https://admin.socket.io"],
-    credentials: true
+    credentials: true,
   }
 });
 const port = process.env.PORT || 3000;
 const players = {};
 var chestItems = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-const ores = ["emerald", "diamond", "gold", "iron", "ruby", "coal"];
+const ores = [
+	{ type: "emerald", miningSpeed: .000009 },
+  { type: "platinum", miningSpeed: .000005 },
+	{ type: "diamond", miningSpeed: .00001 },
+	{ type: "coal", miningSpeed: .0005 },
+	{ type: "ruby", miningSpeed: .0001 },
+	{ type: "iron", miningSpeed: .001 },
+	{ type: "gold", miningSpeed: .01 },
+];
 const plainTypes = ["tree", "small-tree", "flower", "blue-flower", "purple-flower"];
 const devs = ["13121245", "15824042", "6759741", "18760736"];
 getChestItems();
@@ -93,6 +101,8 @@ io.on("connection", (socket) => {
     name: randomName(),
     devMode: false,
     ready: false,
+    eventData: {},
+    premiumUser: false,
   };
 
   getPlayerData();
@@ -115,12 +125,14 @@ io.on("connection", (socket) => {
       }
       players[socket.id] = player;
       socket.emit("playerData", players[socket.id]);
+      socket.emit("send event data", players[socket.id].eventData);
     }
   };
 
   socket.broadcast.emit("newPlayer", players[socket.id]);
 
   socket.on("respawn", () => {
+    if (typeof players[socket.id].lastTouched == "undefined") return;
     // if (players[socket.id].lastTouched === null) return;
     // players[players[socket.id].lastTouched].kills++;
 
@@ -136,48 +148,40 @@ io.on("connection", (socket) => {
   });
 
   socket.on("updateOres", (data) => {
-    if (scenes[players[socket.id].scene].type !== "cave") return;
-    if (!data[0]?.mined) return;
+		const scene = scenes[players[socket.id].scene];
+    if (scene.type !== "cave") return;
+    if (typeof data[0].mined == "undefined") return;
     if (data[0].mined) {
-      var xCord = Math.floor(Math.random() * scenes[players[socket.id].scene].width);
-      var yCord = Math.floor(Math.random() * scenes[players[socket.id].scene].height);
+      var xCord = Math.floor(Math.random() * scene.width);
+      var yCord = Math.floor(Math.random() * scene.height);
 
-      scenes[players[socket.id].scene].scenery[data[1]] = {
+			const { type, miningSpeed } = ores[Math.floor(Math.random() * ores.length)];
+			
+      scene.scenery[data[1]] = {
         x: xCord * 200,
         y: yCord * 200,
-        type: ores[Math.floor(Math.random() * ores.length)],
+        type,
+				miningSpeed,
         mining: 1,
         mined: false,
       }
 
-      if (scenes[players[socket.id].scene].scenery[data[1]].type === "diamond") {
-        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.00001;
-      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "emerald") {
-        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.000009;
-      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "iron") {
-        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.001;
-      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "gold") {
-        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.01;
-      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "ruby") {
-        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.0001;
-      } else if (scenes[players[socket.id].scene].scenery[data[1]].type === "coal") {
-        scenes[players[socket.id].scene].scenery[data[1]].miningSpeed = 0.0005;
-      }
-
-      io.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
+      io.emit("updateOres", [scene.scenery[data[1]], data[1], players[socket.id].scene]);
     } else {
-      scenes[players[socket.id].scene].scenery[data[1]] = data[0];
-      socket.broadcast.emit("updateOres", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
+      scene.scenery[data[1]] = data[0];
+      socket.broadcast.emit("updateOres", [scene.scenery[data[1]], data[1], players[socket.id].scene]);
     }
   });
 
   socket.on("updateTrees", (data) => {
-    if (scenes[players[socket.id].scene].type !== "plains") return;
+		const scene = scenes[players[socket.id].scene];
+    if (scene.type !== "plains") return;
     if (!data[0]?.mined) return;
     if (data[0].mined) {
-      var xCord = Math.floor(Math.random() * scenes[players[socket.id].scene].width);
-      var yCord = Math.floor(Math.random() * scenes[players[socket.id].scene].height);
+      var xCord = Math.floor(Math.random() * scene.width);
+      var yCord = Math.floor(Math.random() * scene.height);
 
+			// consider using switch statements
       if (players[socket.id].scene === 6 || players[socket.id].scene === 3) {
         xCord = Math.floor(Math.random() * 1600);
         yCord = Math.floor(Math.random() * 1600);
@@ -208,7 +212,7 @@ io.on("connection", (socket) => {
         yCord = Math.floor(Math.random() * 600) + 1100;
       }
 
-      scenes[players[socket.id].scene].scenery[data[1]] = {
+      scene.scenery[data[1]] = {
         x: xCord * 200,
         y: yCord * 200,
         type: ["tree", "small-tree"][Math.floor(Math.random() * ["tree", "small-tree"].length)],
@@ -217,10 +221,10 @@ io.on("connection", (socket) => {
         miningSpeed: 0.01,
       }
 
-      io.emit("updateTrees", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
+      io.emit("updateTrees", [scene.scenery[data[1]], data[1], players[socket.id].scene]);
     } else {
-      scenes[players[socket.id].scene].scenery[data[1]] = data[0];
-      socket.broadcast.emit("updateTrees", [scenes[players[socket.id].scene].scenery[data[1]], data[1], players[socket.id].scene]);
+      scene.scenery[data[1]] = data[0];
+      socket.broadcast.emit("updateTrees", [scene.scenery[data[1]], data[1], players[socket.id].scene]);
     }
   });
 
@@ -251,6 +255,35 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("playerMoved", players[socket.id]);
   });
 
+  socket.on("get event data", async (user) => {
+    const keys = await db.list();
+    if (keys.includes(user)) {
+      let player = await db.get(user);
+      if (!player) return;
+      player = JSON.parse(player);
+      socket.emit("event data", player.eventData);
+    }
+  });
+
+  socket.on("update event data", async (data) => {
+    if (data.dbId === null) return;
+    var player = await db.get(data.dbId);
+    player = JSON.parse(player);
+    player.eventData = data.eventData;
+    if (player.eventData.score >= 1000000000) {
+      player.premiumUser = true;
+    } else {
+      player.premiumUser = false;
+    }
+    await db.set(data.dbId, JSON.stringify(player));
+    Object.keys(players).forEach(id => {
+      const p = players[id];
+      if (p.dbId === data.dbId) {
+        io.to(id).emit("update event data", player);
+      }
+    });
+  });
+
   socket.on("chat message", (message) => {
     if (!message) return;
     if (message === null) return;
@@ -265,6 +298,6 @@ function randomName() {
   return adjective[Math.floor(Math.random() * adjective.length)] + object[Math.floor(Math.random() * object.length)];
 }
 
-httpServer.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

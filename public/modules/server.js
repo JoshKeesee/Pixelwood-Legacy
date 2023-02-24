@@ -11,6 +11,7 @@ var updatePlayer;
 var fountainFrames;
 var gameUpdate;
 var connected = false;
+var premiumUser = false;
 
 socket.on("currentPlayers", (data) => {
   myId = socket.id;
@@ -132,6 +133,11 @@ socket.on("hitPlayer", (player) => {
   players[myId] = player;
 });
 
+socket.on("update event data", (player) => {
+  players[myId].eventData = player.eventData;
+  players[myId].premiumUser = player.premiumUser;
+});
+
 socket.on("addKill", (kills) => {
   players[myId].kills = kills;
 });
@@ -179,6 +185,14 @@ socket.on("disconnect", () => {
 
 socket.on("disconnected", (player) => {
   delete players[player];
+});
+
+socket.on("unlock platinum", () => {
+  premiumUser = true;
+});
+
+socket.on("lock platinum", () => {
+  premiumUser = false;
 });
 
 window.console.log = () => {

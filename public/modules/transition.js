@@ -17,6 +17,7 @@ function transitionScene(ms) {
 function startGame() {
   $(".furnace").slideUp(0);
   $(".chest").slideUp(0);
+  $(".game-save").slideUp(0);
   $(".connected").addClass("hidden");
   $(".save").removeClass("hidden");
 
@@ -26,7 +27,6 @@ function startGame() {
   $(".main-menu").slideUp("slow");
   $("footer").fadeOut("slow");
   setTimeout(() => {
-    $("meta[name=theme-color]").attr("content", "black");
     $(".loading .icon").fadeIn();
   }, 500);
   

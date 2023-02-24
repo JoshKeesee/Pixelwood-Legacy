@@ -16,18 +16,21 @@ var workbenchRecipes = {
   "ruby-pickaxe": ["ruby", "ruby", "ruby", "", "stick", "", "", "stick", ""],
   "diamond-pickaxe": ["diamond", "diamond", "diamond", "", "stick", "", "", "stick", ""],
   "emerald-pickaxe": ["emerald", "emerald", "emerald", "", "stick", "", "", "stick", ""],
+  "platinum-pickaxe": ["platinum", "platinum", "platinum", "", "stick", "", "", "stick", ""],
   "wooden-sword": ["", "stick", "", "", "stick", "", "", "stick", ""],
   "gold-sword": ["", "gold", "", "", "gold", "", "", "stick", ""],
   "iron-sword": ["", "iron", "", "", "iron", "", "", "stick", ""],
   "ruby-sword": ["", "ruby", "", "", "ruby", "", "", "stick", ""],
   "diamond-sword": ["", "diamond", "", "", "diamond", "", "", "stick", ""],
   "emerald-sword": ["", "emerald", "", "", "emerald", "", "", "stick", ""],
+  "platinum-sword": ["", "platinum", "", "", "platinum", "", "", "stick", ""],
   "wooden-axe": ["", "stick", "stick", "", "stick", "stick", "", "stick", ""],
   "gold-axe": ["", "gold", "gold", "", "stick", "gold", "", "stick", ""],
   "iron-axe": ["", "iron", "iron", "", "stick", "iron", "", "stick", ""],
   "ruby-axe": ["", "ruby", "ruby", "", "stick", "ruby", "", "stick", ""],
   "diamond-axe": ["", "diamond", "diamond", "", "stick", "diamond", "", "stick", ""],
   "emerald-axe": ["", "emerald", "emerald", "", "stick", "emerald", "", "stick", ""],
+  "platinum-axe": ["", "platinum", "platinum", "", "stick", "platinum", "", "stick", ""],
   "torch": ["", "coal", "", "", "stick", "", "", "stick", ""],
 }
 
@@ -116,9 +119,11 @@ const playerLoop = () => {
         hitForce = 28;
       } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-pickaxe") {
         hitForce = 50;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "platinum-pickaxe") {
+        hitForce = 100;
       }
 
-      if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") && players[myId].inventory[players[myId].spot - 1].includes("pickaxe") && players[myId].useTool) {
+      if ((collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || (collisions[i].type === "platinum" && players[myId].premiumUser) || collisions[i].type === "coal") && players[myId].inventory[players[myId].spot - 1].includes("pickaxe") && players[myId].useTool) {
         scenes[players[myId].scene].scenery[collisions[i].id].mining -= scenes[players[myId].scene].scenery[collisions[i].id].miningSpeed * hitForce;
         if (scenes[players[myId].scene].scenery[collisions[i].id].mining < 0 && !scenes[players[myId].scene].scenery[collisions[i].id].mined) {
           scenes[players[myId].scene].scenery[collisions[i].id].mining = 0;
@@ -141,7 +146,7 @@ const playerLoop = () => {
           updateBackpack();
         }
         socket.emit("updateOres", [scenes[players[myId].scene].scenery[collisions[i].id], collisions[i].id]);
-      } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
+      } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || (collisions[i].type === "platinum" && players[myId].premiumUser) || collisions[i].type === "coal") {
         if (!scenes[players[myId].scene].scenery[collisions[i].id].mined) {
           for (var x = 0; x < Object.keys(players).length; x++) {
             const player = players[Object.keys(players)[x]];
@@ -158,9 +163,7 @@ const playerLoop = () => {
 
       var hitForce = 0;
 
-      if (players[myId].inventory[players[myId].spot - 1] === "") {
-        hitForce = 1;
-      } else if (players[myId].inventory[players[myId].spot - 1] === "wooden-sword") {
+      if (players[myId].inventory[players[myId].spot - 1] === "wooden-sword") {
         hitForce = 2;
       } else if (players[myId].inventory[players[myId].spot - 1] === "gold-sword") {
         hitForce = 3;
@@ -172,9 +175,11 @@ const playerLoop = () => {
         hitForce = 8;
       } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-sword") {
         hitForce = 10;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "platinum-sword") {
+        hitForce = 20;
       }
 
-      if (collisions[i].type === "player" && (players[myId].inventory[players[myId].spot - 1].includes("sword") || players[myId].inventory[players[myId].spot - 1] === "") && players[myId].useTool) {
+      if (collisions[i].type === "player" && (players[myId].inventory[players[myId].spot - 1].includes("sword")) && players[myId].useTool) {
         if (players[myId].costumeY === 0) {
           players[collisions[i].id].yVel += 10;
         } else if (players[myId].costumeY === 1) {
@@ -208,6 +213,8 @@ const playerLoop = () => {
         hitForce = 1 + 1 / 4;
       } else if (players[myId].inventory[players[myId].spot - 1] === "emerald-axe") {
         hitForce = 1 + 1 / 2;
+      } else if (players[myId].inventory[players[myId].spot - 1] === "platinum-axe") {
+        hitForce = 2 + 1 / 2;
       }
 
       if ((collisions[i].type === "tree" || collisions[i].type === "small-tree") && (players[myId].inventory[players[myId].spot - 1].includes("axe") || players[myId].inventory[players[myId].spot - 1] === "") && players[myId].useTool) {
@@ -261,7 +268,7 @@ const playerLoop = () => {
             } else if (movement.use) {
               toggleWorkbench();
             }
-          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
+          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal" || collisions[i].type === "platinum") {
             players[myId].y = collisions[i].y - (frameheight / scale);
           }
         }
@@ -278,7 +285,7 @@ const playerLoop = () => {
             } else if (movement.use) {
               toggleWorkbench();
             }
-          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
+          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal" || collisions[i].type === "platinum") {
             players[myId].y = collisions[i].y + collisions[i].h;
           }
         }
@@ -295,7 +302,7 @@ const playerLoop = () => {
             } else if (movement.use) {
               toggleWorkbench();
             }
-          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
+          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal" || collisions[i].type === "platinum") {
             players[myId].x = collisions[i].x + collisions[i].w;
           }
         }
@@ -312,7 +319,7 @@ const playerLoop = () => {
             } else if (movement.use) {
               toggleWorkbench();
             }
-          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal") {
+          } else if (collisions[i].type === "iron" || collisions[i].type === "gold" || collisions[i].type === "emerald" || collisions[i].type === "diamond" || collisions[i].type === "ruby" || collisions[i].type === "coal" || collisions[i].type === "platinum") {
             players[myId].x = collisions[i].x - (framewidth / scale);
           }
         }

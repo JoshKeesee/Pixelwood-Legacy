@@ -32,7 +32,7 @@ document.getElementById("input").addEventListener("keydown", (e) => {
 
 socket.on("send message", (message) => {
   var div = document.createElement("div");
-  div.innerHTML = "<div style='font-weight: 1000; font-size: 15px;'>" + message[0].replace(/<[^>]+>/g, '') + "</div><div>" + message[1].replace(/<[^>]+>/g, '') + "</div><hr style='height: 5px; border-radius: 5px; background: indigo; border: none;'>";
+  div.innerHTML = "<div style='font-weight: 1000; font-size: 15px;'>" + message[0].replace(/<[^>]+>/g, '') + "</div><div>" + message[1].replace(/<[^>]+>/g, '') + "</div><hr style='height: 5px; border-radius: 5px; background: darkblue; border: none;'>";
   document.getElementById("messages").appendChild(div);
   document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
   if (!chatOpen) {

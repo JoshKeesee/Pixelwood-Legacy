@@ -264,6 +264,19 @@ function animate() {
           type: "emerald",
         }
       }
+    } else if (object.type === "platinum") {
+      height = 0;
+      if (!object.mined) {
+        collisions[collisions.length] = {
+          x: object.x,
+          y: object.y,
+          w: 200,
+          h: 200,
+          id: scenes[players[myId].scene].scenery.indexOf(object),
+          mining: object.mining,
+          type: "platinum",
+        }
+      }
     } else if (object.type === "ruby") {
       height = 0;
       if (!object.mined) {
@@ -449,6 +462,10 @@ function animate() {
     } else if (object.type === "emerald") {
       ctx.globalAlpha = object.mining;
       ctx.drawImage(emerald, object.x, object.y, emerald.width, emerald.height);
+      ctx.globalAlpha = 1.0;
+    } else if (object.type === "platinum") {
+      ctx.globalAlpha = object.mining;
+      ctx.drawImage(platinum, object.x, object.y, platinum.width, platinum.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "diamond") {
       ctx.globalAlpha = object.mining;

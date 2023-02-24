@@ -1,5 +1,5 @@
 const plainTypes = ["tree", "small-tree", "flower", "blue-flower", "purple-flower"];
-const ores = ["emerald", "diamond", "gold", "iron", "ruby", "coal"];
+const ores = ["emerald", "platinum", "diamond", "gold", "iron", "ruby", "coal"];
 const scenes = [
   {
     width: 20,
@@ -1161,6 +1161,8 @@ function updateCave(i) {
       scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.00001;
     } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "emerald") {
       scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.000009;
+    } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "platinum") {
+      scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.000005;
     } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "iron") {
       scenes[i].scenery[scenes[i].scenery.length - 1].miningSpeed = 0.001;
     } else if (scenes[i].scenery[scenes[i].scenery.length - 1].type === "gold") {

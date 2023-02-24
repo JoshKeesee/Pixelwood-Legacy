@@ -13,7 +13,7 @@
   "scope": "/",
   "start_url": "/",
   "display": "fullscreen",
-  "theme_color": "indigo",
+  "theme_color": "black",
   "background_color": "black",
   "prefer_related_applications": false
 }

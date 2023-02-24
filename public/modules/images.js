@@ -28,6 +28,7 @@ var fenceHorizontal;
 var fencePost;
 var diamond;
 var emerald;
+var platinum;
 var gold;
 var iron;
 var ruby;
@@ -90,6 +91,16 @@ items["emerald-pickaxe"].onload = incrementCounter;
 items["emerald-axe"] = document.createElement("img");
 items["emerald-axe"].src = "/images/emerald-axe.png";
 items["emerald-axe"].onload = incrementCounter;
+items["emerald-sword"] = document.createElement("img");
+items["platinum-sword"] = document.createElement("img");
+items["platinum-sword"].src = "/images/platinum-sword.png";
+items["platinum-sword"].onload = incrementCounter;
+items["platinum-pickaxe"] = document.createElement("img");
+items["platinum-pickaxe"].src = "/images/platinum-pickaxe.png";
+items["platinum-pickaxe"].onload = incrementCounter;
+items["platinum-axe"] = document.createElement("img");
+items["platinum-axe"].src = "/images/platinum-axe.png";
+items["platinum-axe"].onload = incrementCounter;
 items.stick = document.createElement("img");
 items.stick.src = "/images/stick.png";
 items.stick.onload = incrementCounter;
@@ -105,6 +116,9 @@ items.diamond.onload = incrementCounter;
 items.emerald = document.createElement("img");
 items.emerald.src = "/images/emerald-ingot.png";
 items.emerald.onload = incrementCounter;
+items.platinum = document.createElement("img");
+items.platinum.src = "/images/platinum-ingot.png";
+items.platinum.onload = incrementCounter;
 items.gold = document.createElement("img");
 items.gold.src = "/images/gold-ingot.png";
 items.gold.onload = incrementCounter;
@@ -115,7 +129,7 @@ items.ruby = document.createElement("img");
 items.ruby.src = "/images/ruby-ingot.png";
 items.ruby.onload = incrementCounter;
 
-const images = [costume, grass, dirt, path, rocks, tree, smallTree, flower, blueFlower, purpleFlower, house, tree, ladder, bed, furnace, chestClosed, chestOpen, workbench, glass, cave, sign, fountain, bean, fenceVertical, fenceHorizontal, fencePost, emerald, diamond, gold, iron, ruby, coal].concat(Object.keys(items));
+const images = [costume, grass, dirt, path, rocks, tree, smallTree, flower, blueFlower, purpleFlower, house, tree, ladder, bed, furnace, chestClosed, chestOpen, workbench, glass, cave, sign, fountain, bean, fenceVertical, fenceHorizontal, fencePost, emerald, platinum, diamond, gold, iron, ruby, coal].concat(Object.keys(items));
 var counter = 0;
 
 function incrementCounter() {
@@ -315,6 +329,14 @@ function loadImages() {
     ratio = emerald.width / emerald.height;
     emerald.width = ratio * 200;
     emerald.height = 200;
+    incrementCounter();
+  }
+  platinum = document.createElement("img");
+  platinum.src = "/images/platinum.png";
+  platinum.onload = () => {
+    ratio = platinum.width / platinum.height;
+    platinum.width = ratio * 200;
+    platinum.height = 200;
     incrementCounter();
   }
   diamond = document.createElement("img");
