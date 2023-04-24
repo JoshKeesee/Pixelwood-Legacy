@@ -166,6 +166,8 @@ io.on("connection", (socket) => {
         mined: false,
       }
 
+      console.log(scene.scenery[data[1]]);
+
       io.emit("updateOres", [scene.scenery[data[1]], data[1], players[socket.id].scene]);
     } else {
       scene.scenery[data[1]] = data[0];
