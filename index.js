@@ -6,7 +6,7 @@ const app = express();
 const favicon = require("serve-favicon");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const server = createServer(app);
+const server = createServer(app)
 const io = new Server(server, {
 	cors: {
 		origin: ["https://admin.socket.io"],
@@ -58,7 +58,6 @@ authMiddleware(app, { customPage: __dirname + "/views/index.ejs" });
 authMiddleware(io);
 
 app.get("/", (req, res) => {
-  if (req.get("host") != "pixelwood.repl.co") return res.writeHead(301, {Location: "pixelwood.repl.co"}).end();
 	const { user } = req;
 	return res.render("index", {
 		user,
