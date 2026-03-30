@@ -1,4 +1,21 @@
-const socket = io();
+function getOrCreateGuestId() {
+  let guestId = localStorage.getItem("pixelwood_guest_id");
+  if (!guestId) {
+    if (typeof crypto !== "undefined" && crypto.randomUUID) {
+      guestId = crypto.randomUUID();
+    } else {
+      guestId = "guest-" + Math.random().toString(36).slice(2, 12);
+    }
+    localStorage.setItem("pixelwood_guest_id", guestId);
+  }
+  return guestId;
+}
+
+const socket = io({
+  auth: {
+    userId: getOrCreateGuestId(),
+  },
+});
 
 var myId = 0;
 var players = {};
@@ -24,7 +41,12 @@ socket.on("currentPlayers", (data) => {
 
   for (var i = 0; i < chestItems.length; i++) {
     if (chestItems[i] !== "") {
-      document.querySelectorAll(".chest .item")[i].innerHTML = "<img id='" + chestItems[i] + "' src='" + items[chestItems[i]].src + "'>";
+      document.querySelectorAll(".chest .item")[i].innerHTML =
+        "<img id='" +
+        chestItems[i] +
+        "' src='" +
+        items[chestItems[i]].src +
+        "'>";
     } else {
       document.querySelectorAll(".item")[i].innerHTML = "";
     }
@@ -33,10 +55,6 @@ socket.on("currentPlayers", (data) => {
   socket.emit("playerMovement", players[socket.id]);
 
   updatePlayer = setInterval(() => {
-    if (user) {
-      players[myId].name = user.name;
-    }
-
     if (connected) {
       socket.emit("playerMovement", players[myId]);
     }
@@ -70,7 +88,24 @@ function checkForAnimate() {
         rotate: 0,
         spot: 1,
         inventory: ["", "", "", "", "", "", "", ""],
-        backpack: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+        backpack: [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+        ],
         dbId: null,
         name: "Offline",
         devMode: false,
@@ -117,7 +152,12 @@ socket.on("playerData", (player) => {
   }
   for (var i = 0; i < players[myId].backpack.length; i++) {
     if (players[myId].backpack[i] !== "") {
-      document.querySelectorAll(".backpack .item")[i].innerHTML = "<img id='" + players[myId].backpack[i] + "' src='" + items[players[myId].backpack[i]].src + "'>";
+      document.querySelectorAll(".backpack .item")[i].innerHTML =
+        "<img id='" +
+        players[myId].backpack[i] +
+        "' src='" +
+        items[players[myId].backpack[i]].src +
+        "'>";
     } else {
       document.querySelectorAll(".backpack .item")[i].innerHTML = "";
     }
@@ -154,7 +194,12 @@ socket.on("update chestItems", (data) => {
   chestItems = data;
   for (var i = 0; i < chestItems.length; i++) {
     if (chestItems[i] !== "") {
-      document.querySelectorAll(".chest .item")[i].innerHTML = "<img id='" + chestItems[i] + "' src='" + items[chestItems[i]].src + "'>";
+      document.querySelectorAll(".chest .item")[i].innerHTML =
+        "<img id='" +
+        chestItems[i] +
+        "' src='" +
+        items[chestItems[i]].src +
+        "'>";
     } else {
       document.querySelectorAll(".chest .item")[i].innerHTML = "";
     }
@@ -199,5 +244,5 @@ window.console.log = () => {
   console.error("I told you to stop. I will report you.");
   window.console.log = () => {
     return false;
-  }
-}
+  };
+};

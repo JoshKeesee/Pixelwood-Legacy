@@ -33,7 +33,7 @@ function animate() {
     hotBarSize = canvas.width / 10;
   }
   hotBarSpots = players[myId].inventory.length;
-  Object.keys(items).forEach(item => {
+  Object.keys(items).forEach((item) => {
     items[item].width = hotBarSize - 20;
     items[item].height = hotBarSize - 20;
   });
@@ -54,18 +54,44 @@ function animate() {
   for (var i = 0; i < scenes[players[myId].scene].height; i++) {
     for (var x = 0; x < scenes[players[myId].scene].width; x++) {
       if (scenes[players[myId].scene].type === "plains") {
-        ctx.drawImage(grass, x * grass.width, i * grass.height, grass.width, grass.height);
+        ctx.drawImage(
+          grass,
+          x * grass.width,
+          i * grass.height,
+          grass.width,
+          grass.height,
+        );
       } else if (scenes[players[myId].scene].type === "house") {
-        ctx.drawImage(plank, x * plank.width, i * plank.height, plank.width, plank.height);
+        ctx.drawImage(
+          plank,
+          x * plank.width,
+          i * plank.height,
+          plank.width,
+          plank.height,
+        );
       } else if (scenes[players[myId].scene].type === "cave") {
-        ctx.drawImage(rocks, x * rocks.width, i * rocks.height, rocks.width, rocks.height);
+        ctx.drawImage(
+          rocks,
+          x * rocks.width,
+          i * rocks.height,
+          rocks.width,
+          rocks.height,
+        );
       }
     }
   }
 
-  if (scenes[players[myId].scene].type === "house" && scenes[players[myId].scene].height > 3) {
+  if (
+    scenes[players[myId].scene].type === "house" &&
+    scenes[players[myId].scene].height > 3
+  ) {
     ctx.beginPath();
-    ctx.rect(-2, (scenes[players[myId].scene].height - 1) * plank.height + 2, (scenes[players[myId].scene].width - 1) * plank.width + 2, plank.height);
+    ctx.rect(
+      -2,
+      (scenes[players[myId].scene].height - 1) * plank.height + 2,
+      (scenes[players[myId].scene].width - 1) * plank.width + 2,
+      plank.height,
+    );
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
@@ -75,7 +101,7 @@ function animate() {
       w: (scenes[players[myId].scene].width - 1) * plank.width + 2,
       h: plank.height,
       type: "black",
-    }
+    };
   } else if (scenes[players[myId].scene].type === "house") {
     ctx.beginPath();
     ctx.rect(-2, -2, plank.width + 2, plank.height - 100);
@@ -87,7 +113,13 @@ function animate() {
   if (scenes[players[myId].scene].type === "plains") {
     for (var i = 0; i < scenes[players[myId].scene].scenery.length; i++) {
       if (scenes[players[myId].scene].scenery[i]?.type === "path") {
-        ctx.drawImage(path, scenes[players[myId].scene].scenery[i].x, scenes[players[myId].scene].scenery[i].y, path.width, path.height);
+        ctx.drawImage(
+          path,
+          scenes[players[myId].scene].scenery[i].x,
+          scenes[players[myId].scene].scenery[i].y,
+          path.width,
+          path.height,
+        );
       }
     }
   }
@@ -95,7 +127,7 @@ function animate() {
   var person = [];
   var i = 0;
 
-  Object.keys(players).forEach(id => {
+  Object.keys(players).forEach((id) => {
     person[i] = {
       x: players[id].x,
       y: players[id].y,
@@ -118,7 +150,7 @@ function animate() {
   var newScenery = [];
   i = 0;
 
-  scenes[players[myId].scene].scenery.forEach(object => {
+  scenes[players[myId].scene].scenery.forEach((object) => {
     var height;
     if (!object) return;
     if (object.type === "dirt") {
@@ -134,9 +166,10 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "tree",
-        }
+        };
       }
-    } if (object.type === "small-tree") {
+    }
+    if (object.type === "small-tree") {
       height = smallTree.height;
       if (!object.mined) {
         collisions[collisions.length] = {
@@ -147,7 +180,7 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "small-tree",
-        }
+        };
       }
     } else if (object.type === "flower") {
       height = flower.height;
@@ -163,7 +196,7 @@ function animate() {
         w: house.width - 230,
         h: house.height - 360,
         type: "house",
-      }
+      };
     } else if (object.type === "ladder") {
       height = 0;
       collisions[collisions.length] = {
@@ -175,7 +208,7 @@ function animate() {
         toScene: object.toScene,
         toX: object.toX,
         toY: object.toY,
-      }
+      };
     } else if (object.type === "exit") {
       height = 20;
       collisions[collisions.length] = {
@@ -187,7 +220,7 @@ function animate() {
         toScene: object.toScene,
         toX: object.toX,
         toY: object.toY,
-      }
+      };
     } else if (object.type === "change") {
       height = 200;
       collisions[collisions.length] = {
@@ -199,7 +232,7 @@ function animate() {
         toScene: object.toScene,
         toX: object.toX,
         toY: object.toY,
-      }
+      };
     } else if (object.type === "chest") {
       height = chestClosed.height;
       collisions[collisions.length] = {
@@ -208,7 +241,7 @@ function animate() {
         w: chestClosed.width,
         h: chestClosed.height,
         type: "chest",
-      }
+      };
     } else if (object.type === "furnace") {
       height = furnace.height;
       collisions[collisions.length] = {
@@ -217,7 +250,7 @@ function animate() {
         w: furnace.width,
         h: furnace.height,
         type: "furnace",
-      }
+      };
     } else if (object.type === "workbench") {
       height = workbench.height;
       collisions[collisions.length] = {
@@ -226,7 +259,7 @@ function animate() {
         w: workbench.width,
         h: workbench.height,
         type: "workbench",
-      }
+      };
     } else if (object.type === "bed") {
       height = 0;
       collisions[collisions.length] = {
@@ -235,7 +268,7 @@ function animate() {
         w: bed.width,
         h: bed.height,
         type: "bed",
-      }
+      };
     } else if (object.type === "glass") {
       height = glass.height;
     } else if (object.type === "sign") {
@@ -250,7 +283,7 @@ function animate() {
         w: 200,
         h: 200,
         type: "box",
-      }
+      };
     } else if (object.type === "emerald") {
       height = 0;
       if (!object.mined) {
@@ -262,7 +295,7 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "emerald",
-        }
+        };
       }
     } else if (object.type === "platinum") {
       height = 0;
@@ -275,7 +308,7 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "platinum",
-        }
+        };
       }
     } else if (object.type === "ruby") {
       height = 0;
@@ -288,7 +321,7 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "ruby",
-        }
+        };
       }
     } else if (object.type === "diamond") {
       height = 0;
@@ -301,7 +334,7 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "diamond",
-        }
+        };
       }
     } else if (object.type === "gold") {
       height = 0;
@@ -314,7 +347,7 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "gold",
-        }
+        };
       }
     } else if (object.type === "iron") {
       height = 0;
@@ -327,7 +360,7 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "iron",
-        }
+        };
       }
     } else if (object.type === "coal") {
       height = 0;
@@ -340,7 +373,7 @@ function animate() {
           id: scenes[players[myId].scene].scenery.indexOf(object),
           mining: object.mining,
           type: "coal",
-        }
+        };
       }
     } else if (object.type === "fountain") {
       height = fountainHeight / 2;
@@ -350,7 +383,7 @@ function animate() {
         w: fountainWidth / 2,
         h: fountainHeight / 2 - 130 - frameheight / scale,
         type: "fountain",
-      }
+      };
     } else if (object.type === "fence-vertical") {
       height = fenceVertical.height;
       collisions[collisions.length] = {
@@ -359,7 +392,7 @@ function animate() {
         w: fenceVertical.width,
         h: fenceVertical.height - frameheight / scale + 20 - 30,
         type: "fence-vertical",
-      }
+      };
     } else if (object.type === "fence-horizontal") {
       height = fenceHorizontal.height;
       collisions[collisions.length] = {
@@ -368,7 +401,7 @@ function animate() {
         w: fenceHorizontal.width,
         h: fenceHorizontal.height - frameheight / scale + 20 - 30,
         type: "fence-horizontal",
-      }
+      };
     } else if (object.type === "fence-post") {
       height = fencePost.height;
       collisions[collisions.length] = {
@@ -377,7 +410,7 @@ function animate() {
         w: fencePost.width,
         h: fencePost.height - frameheight / scale + 20 - 30,
         type: "fence-post",
-      }
+      };
     } else if (object.type === "easter egg") {
       height = 200;
     }
@@ -389,7 +422,7 @@ function animate() {
 
   var order = person.concat(newScenery);
   order.sort((a, b) => {
-    return (a.y + a.h) - (b.y + b.h);
+    return a.y + a.h - (b.y + b.h);
   });
 
   for (var i = 0; i < order.length; i++) {
@@ -402,14 +435,32 @@ function animate() {
       ctx.globalAlpha = 1.0;
     } else if (object.type === "small-tree") {
       ctx.globalAlpha = object.mining;
-      ctx.drawImage(smallTree, object.x, object.y, smallTree.width, smallTree.height);
+      ctx.drawImage(
+        smallTree,
+        object.x,
+        object.y,
+        smallTree.width,
+        smallTree.height,
+      );
       ctx.globalAlpha = 1.0;
     } else if (object.type === "flower") {
       ctx.drawImage(flower, object.x, object.y, flower.width, flower.height);
     } else if (object.type === "blue-flower") {
-      ctx.drawImage(blueFlower, object.x, object.y, blueFlower.width, blueFlower.height);
+      ctx.drawImage(
+        blueFlower,
+        object.x,
+        object.y,
+        blueFlower.width,
+        blueFlower.height,
+      );
     } else if (object.type === "purple-flower") {
-      ctx.drawImage(purpleFlower, object.x, object.y, purpleFlower.width, purpleFlower.height);
+      ctx.drawImage(
+        purpleFlower,
+        object.x,
+        object.y,
+        purpleFlower.width,
+        purpleFlower.height,
+      );
     } else if (object.type === "house") {
       ctx.drawImage(house, object.x, object.y, house.width, house.height);
     } else if (object.type === "ladder") {
@@ -419,7 +470,13 @@ function animate() {
     } else if (object.type === "furnace") {
       ctx.drawImage(furnace, object.x, object.y, furnace.width, furnace.height);
     } else if (object.type === "workbench") {
-      ctx.drawImage(workbench, object.x, object.y, workbench.width, workbench.height);
+      ctx.drawImage(
+        workbench,
+        object.x,
+        object.y,
+        workbench.width,
+        workbench.height,
+      );
     } else if (object.type === "glass") {
       ctx.drawImage(glass, object.x, object.y, glass.width, glass.height);
     } else if (object.type === "cave") {
@@ -435,13 +492,23 @@ function animate() {
       ctx.font = "30px pixel";
       ctx.fillStyle = "black";
       ctx.textRendering = "optimizeLegibility";
-      ctx.fillText(object.text, object.x + sign.width / 2, object.y + sign.height / 2 - 5);
+      ctx.fillText(
+        object.text,
+        object.x + sign.width / 2,
+        object.y + sign.height / 2 - 5,
+      );
     } else if (object.type === "chest") {
       var isOpen = true;
 
       for (var x = 0; x < Object.keys(players).length; x++) {
         if (players[Object.keys(players)[x]].chestOpen) {
-          ctx.drawImage(chestOpen, object.x, object.y - 50, chestOpen.width, chestOpen.height);
+          ctx.drawImage(
+            chestOpen,
+            object.x,
+            object.y - 50,
+            chestOpen.width,
+            chestOpen.height,
+          );
           break;
         }
 
@@ -451,7 +518,13 @@ function animate() {
       }
 
       if (!isOpen) {
-        ctx.drawImage(chestClosed, object.x, object.y, chestClosed.width, chestClosed.height);
+        ctx.drawImage(
+          chestClosed,
+          object.x,
+          object.y,
+          chestClosed.width,
+          chestClosed.height,
+        );
       }
     } else if (object.type === "box") {
       ctx.beginPath();
@@ -465,7 +538,13 @@ function animate() {
       ctx.globalAlpha = 1.0;
     } else if (object.type === "platinum") {
       ctx.globalAlpha = object.mining;
-      ctx.drawImage(platinum, object.x, object.y, platinum.width, platinum.height);
+      ctx.drawImage(
+        platinum,
+        object.x,
+        object.y,
+        platinum.width,
+        platinum.height,
+      );
       ctx.globalAlpha = 1.0;
     } else if (object.type === "diamond") {
       ctx.globalAlpha = object.mining;
@@ -488,49 +567,101 @@ function animate() {
       ctx.drawImage(coal, object.x, object.y, coal.width, coal.height);
       ctx.globalAlpha = 1.0;
     } else if (object.type === "fountain") {
-      ctx.drawImage(fountain, fountainFrame * fountainWidth, 0, fountainWidth, fountainHeight, object.x, object.y, fountainWidth / 2, fountainHeight / 2);
+      ctx.drawImage(
+        fountain,
+        fountainFrame * fountainWidth,
+        0,
+        fountainWidth,
+        fountainHeight,
+        object.x,
+        object.y,
+        fountainWidth / 2,
+        fountainHeight / 2,
+      );
     } else if (object.type === "fence-vertical") {
-      ctx.drawImage(fenceVertical, object.x, object.y, fenceVertical.width, fenceVertical.height);
+      ctx.drawImage(
+        fenceVertical,
+        object.x,
+        object.y,
+        fenceVertical.width,
+        fenceVertical.height,
+      );
     } else if (object.type === "fence-horizontal") {
-      ctx.drawImage(fenceHorizontal, object.x, object.y, fenceHorizontal.width, fenceHorizontal.height);
+      ctx.drawImage(
+        fenceHorizontal,
+        object.x,
+        object.y,
+        fenceHorizontal.width,
+        fenceHorizontal.height,
+      );
     } else if (object.type === "fence-post") {
-      ctx.drawImage(fencePost, object.x, object.y, fencePost.width, fencePost.height);
+      ctx.drawImage(
+        fencePost,
+        object.x,
+        object.y,
+        fencePost.width,
+        fencePost.height,
+      );
     } else if (object.type === "easter egg") {
-      if (colliding({
-        x: players[myId].x,
-        y: players[myId].y,
-        w: framewidth / scale,
-        h: frameheight / scale,
-      }, {
-        x: object.x,
-        y: object.y,
-        w: 200,
-        h: 200 - 150,
-      })) {
+      if (
+        colliding(
+          {
+            x: players[myId].x,
+            y: players[myId].y,
+            w: framewidth / scale,
+            h: frameheight / scale,
+          },
+          {
+            x: object.x,
+            y: object.y,
+            w: 200,
+            h: 200 - 150,
+          },
+        )
+      ) {
         easterEgg = true;
         $(".usetool .text").html("...?");
         if (players[myId].useTool) {
-          ctx.drawImage(bean, object.x + 200, object.y, bean.width, bean.height);
+          ctx.drawImage(
+            bean,
+            object.x + 200,
+            object.y,
+            bean.width,
+            bean.height,
+          );
         }
       } else {
         easterEgg = false;
       }
     } else if (object.type === "player") {
       var player = players[object.id];
-      if (player.devMode && players[myId].devMode && player.scene === players[myId].scene) {
+      if (
+        player.devMode &&
+        players[myId].devMode &&
+        player.scene === players[myId].scene
+      ) {
         ctx.globalAlpha = 1.0;
         ctx.fillStyle = "red";
         ctx.fillRect(player.x, player.y - 15, framewidth / scale, 15);
         ctx.fillStyle = "green";
-        ctx.fillRect(player.x, player.y - 15, (player.health / 100) * (framewidth / scale), 15);
+        ctx.fillRect(
+          player.x,
+          player.y - 15,
+          (player.health / 100) * (framewidth / scale),
+          15,
+        );
         ctx.strokeStyle = "white";
         ctx.strokeRect(player.x, player.y - 15, framewidth / scale, 15);
-        
+
         ctx.textAlign = "center";
         ctx.font = "25px pixel";
         ctx.fillStyle = "white";
-        ctx.textRendering = "optimizeLegibility"
-        ctx.fillText(player.name + " [Dev]", player.x + framewidth / scale / 2, player.y - 20);
+        ctx.textRendering = "optimizeLegibility";
+        ctx.fillText(
+          player.name + " [Dev]",
+          player.x + framewidth / scale / 2,
+          player.y - 20,
+        );
 
         if (player.inventory[player.spot - 1] !== "" && player.useTool) {
           var xCord;
@@ -540,7 +671,12 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
+          if (
+            player.inventory[player.spot - 1].includes("pickaxe") ||
+            player.inventory[player.spot - 1].includes("sword") ||
+            player.inventory[player.spot - 1].includes("axe") ||
+            player.inventory[player.spot - 1].includes("stick")
+          ) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -550,8 +686,19 @@ function animate() {
             }
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
-          ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
+          ctx.drawImage(
+            items[player.inventory[player.spot - 1]],
+            xCord,
+            yCord,
+            80,
+            80,
+          );
+          if (
+            player.inventory[player.spot - 1].includes("pickaxe") ||
+            player.inventory[player.spot - 1].includes("sword") ||
+            player.inventory[player.spot - 1].includes("axe") ||
+            player.inventory[player.spot - 1].includes("stick")
+          ) {
             ctx.restore();
           }
         } else {
@@ -559,24 +706,55 @@ function animate() {
         }
 
         if (player.costumeY === 3) {
-          ctx.drawImage(costume, framewidth / scale, ((frameheight * player.costumeY) + 75 + (100 * player.costumeY)) / scale, framewidth / scale, frameheight / scale, player.x, player.y, framewidth / scale, frameheight / scale);
+          ctx.drawImage(
+            costume,
+            framewidth / scale,
+            (frameheight * player.costumeY + 75 + 100 * player.costumeY) /
+              scale,
+            framewidth / scale,
+            frameheight / scale,
+            player.x,
+            player.y,
+            framewidth / scale,
+            frameheight / scale,
+          );
         } else {
-          ctx.drawImage(costume, (0 * framewidth) / scale, ((frameheight * player.costumeY) + 75 + (100 * player.costumeY)) / scale, framewidth / scale, frameheight / scale, player.x, player.y, framewidth / scale, frameheight / scale);
+          ctx.drawImage(
+            costume,
+            (0 * framewidth) / scale,
+            (frameheight * player.costumeY + 75 + 100 * player.costumeY) /
+              scale,
+            framewidth / scale,
+            frameheight / scale,
+            player.x,
+            player.y,
+            framewidth / scale,
+            frameheight / scale,
+          );
         }
-      } else if (players[myId].devMode && player.dbId === user.id) {
+      } else if (players[myId].devMode && user && player.dbId === user.id) {
         ctx.globalAlpha = 1.0;
         ctx.fillStyle = "red";
         ctx.fillRect(player.x, player.y - 15, framewidth / scale, 15);
         ctx.fillStyle = "green";
-        ctx.fillRect(player.x, player.y - 15, (player.health / 100) * (framewidth / scale), 15);
+        ctx.fillRect(
+          player.x,
+          player.y - 15,
+          (player.health / 100) * (framewidth / scale),
+          15,
+        );
         ctx.strokeStyle = "white";
         ctx.strokeRect(player.x, player.y - 15, framewidth / scale, 15);
-        
+
         ctx.textAlign = "center";
         ctx.font = "25px pixel";
         ctx.fillStyle = "white";
-        ctx.textRendering = "optimizeLegibility"
-        ctx.fillText(player.name + " [Dev]", player.x + framewidth / scale / 2, player.y - 20);
+        ctx.textRendering = "optimizeLegibility";
+        ctx.fillText(
+          player.name + " [Dev]",
+          player.x + framewidth / scale / 2,
+          player.y - 20,
+        );
 
         if (player.inventory[player.spot - 1] !== "" && player.useTool) {
           var xCord;
@@ -586,7 +764,12 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
+          if (
+            player.inventory[player.spot - 1].includes("pickaxe") ||
+            player.inventory[player.spot - 1].includes("sword") ||
+            player.inventory[player.spot - 1].includes("axe") ||
+            player.inventory[player.spot - 1].includes("stick")
+          ) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -596,8 +779,19 @@ function animate() {
             }
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
-          ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
+          ctx.drawImage(
+            items[player.inventory[player.spot - 1]],
+            xCord,
+            yCord,
+            80,
+            80,
+          );
+          if (
+            player.inventory[player.spot - 1].includes("pickaxe") ||
+            player.inventory[player.spot - 1].includes("sword") ||
+            player.inventory[player.spot - 1].includes("axe") ||
+            player.inventory[player.spot - 1].includes("stick")
+          ) {
             ctx.restore();
           }
         } else {
@@ -605,24 +799,59 @@ function animate() {
         }
 
         if (player.costumeY === 3) {
-          ctx.drawImage(costume, framewidth / scale, ((frameheight * player.costumeY) + 75 + (100 * player.costumeY)) / scale, framewidth / scale, frameheight / scale, player.x, player.y, framewidth / scale, frameheight / scale);
+          ctx.drawImage(
+            costume,
+            framewidth / scale,
+            (frameheight * player.costumeY + 75 + 100 * player.costumeY) /
+              scale,
+            framewidth / scale,
+            frameheight / scale,
+            player.x,
+            player.y,
+            framewidth / scale,
+            frameheight / scale,
+          );
         } else {
-          ctx.drawImage(costume, (0 * framewidth) / scale, ((frameheight * player.costumeY) + 75 + (100 * player.costumeY)) / scale, framewidth / scale, frameheight / scale, player.x, player.y, framewidth / scale, frameheight / scale);
+          ctx.drawImage(
+            costume,
+            (0 * framewidth) / scale,
+            (frameheight * player.costumeY + 75 + 100 * player.costumeY) /
+              scale,
+            framewidth / scale,
+            frameheight / scale,
+            player.x,
+            player.y,
+            framewidth / scale,
+            frameheight / scale,
+          );
         }
-      } else if (player.scene === players[myId].scene && !player.devMode && (players[myId].ready || player.id === players[myId].id)) {
+      } else if (
+        player.scene === players[myId].scene &&
+        !player.devMode &&
+        (players[myId].ready || player.id === players[myId].id)
+      ) {
         ctx.globalAlpha = 1.0;
         ctx.fillStyle = "red";
         ctx.fillRect(player.x, player.y - 15, framewidth / scale, 15);
         ctx.fillStyle = "green";
-        ctx.fillRect(player.x, player.y - 15, (player.health / 100) * (framewidth / scale), 15);
+        ctx.fillRect(
+          player.x,
+          player.y - 15,
+          (player.health / 100) * (framewidth / scale),
+          15,
+        );
         ctx.strokeStyle = "white";
         ctx.strokeRect(player.x, player.y - 15, framewidth / scale, 15);
-        
+
         ctx.textAlign = "center";
         ctx.font = "25px pixel";
         ctx.fillStyle = "white";
-        ctx.textRendering = "optimizeLegibility"
-        ctx.fillText(player.name, player.x + framewidth / scale / 2, player.y - 20);
+        ctx.textRendering = "optimizeLegibility";
+        ctx.fillText(
+          player.name,
+          player.x + framewidth / scale / 2,
+          player.y - 20,
+        );
 
         if (player.inventory[player.spot - 1] !== "" && player.useTool) {
           var xCord;
@@ -632,7 +861,12 @@ function animate() {
           } else {
             xCord = player.x - 60;
           }
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
+          if (
+            player.inventory[player.spot - 1].includes("pickaxe") ||
+            player.inventory[player.spot - 1].includes("sword") ||
+            player.inventory[player.spot - 1].includes("axe") ||
+            player.inventory[player.spot - 1].includes("stick")
+          ) {
             player.rotate++;
             ctx.save();
             ctx.translate(xCord + 40, yCord + 40);
@@ -642,8 +876,19 @@ function animate() {
             }
             ctx.translate(-(xCord + 40), -(yCord + 40));
           }
-          ctx.drawImage(items[player.inventory[player.spot - 1]], xCord, yCord, 80, 80);
-          if (player.inventory[player.spot - 1].includes("pickaxe") || player.inventory[player.spot - 1].includes("sword") || player.inventory[player.spot - 1].includes("axe") || player.inventory[player.spot - 1].includes("stick")) {
+          ctx.drawImage(
+            items[player.inventory[player.spot - 1]],
+            xCord,
+            yCord,
+            80,
+            80,
+          );
+          if (
+            player.inventory[player.spot - 1].includes("pickaxe") ||
+            player.inventory[player.spot - 1].includes("sword") ||
+            player.inventory[player.spot - 1].includes("axe") ||
+            player.inventory[player.spot - 1].includes("stick")
+          ) {
             ctx.restore();
           }
         } else {
@@ -651,15 +896,44 @@ function animate() {
         }
 
         if (player.costumeY === 3 && player.xVel < 1) {
-          ctx.drawImage(costume, framewidth / scale, ((frameheight * player.costumeY) + 75 + (100 * player.costumeY)) / scale, framewidth / scale, frameheight / scale, player.x, player.y, framewidth / scale, frameheight / scale);
+          ctx.drawImage(
+            costume,
+            framewidth / scale,
+            (frameheight * player.costumeY + 75 + 100 * player.costumeY) /
+              scale,
+            framewidth / scale,
+            frameheight / scale,
+            player.x,
+            player.y,
+            framewidth / scale,
+            frameheight / scale,
+          );
         } else {
-          ctx.drawImage(costume, (player.currFrame * framewidth) / scale, ((frameheight * player.costumeY) + 75 + (100 * player.costumeY)) / scale, framewidth / scale, frameheight / scale, player.x, player.y, framewidth / scale, frameheight / scale);
+          ctx.drawImage(
+            costume,
+            (player.currFrame * framewidth) / scale,
+            (frameheight * player.costumeY + 75 + 100 * player.costumeY) /
+              scale,
+            framewidth / scale,
+            frameheight / scale,
+            player.x,
+            player.y,
+            framewidth / scale,
+            frameheight / scale,
+          );
         }
       }
     }
   }
 
-  const gradient = ctx.createRadialGradient(players[myId].x + 40, players[myId].y + 40, 1, players[myId].x + 40, players[myId].y + 40, players[myId].torch);
+  const gradient = ctx.createRadialGradient(
+    players[myId].x + 40,
+    players[myId].y + 40,
+    1,
+    players[myId].x + 40,
+    players[myId].y + 40,
+    players[myId].torch,
+  );
 
   gradient.addColorStop(0, "transparent");
   gradient.addColorStop(1, "black");
@@ -667,7 +941,12 @@ function animate() {
   if (scenes[players[myId].scene].type === "cave") {
     ctx.globalAlpha = 0.95;
     ctx.fillStyle = gradient;
-    ctx.fillRect(CAMERAX - canvas.width * 2, CAMERAY - canvas.height * 2, canvas.width * 4, canvas.height * 4);
+    ctx.fillRect(
+      CAMERAX - canvas.width * 2,
+      CAMERAY - canvas.height * 2,
+      canvas.width * 4,
+      canvas.height * 4,
+    );
     ctx.globalAlpha = 1.0;
   }
 
@@ -697,13 +976,20 @@ function animate() {
 
   for (var i = 0; i < hotBarSpots; i++) {
     ctx.beginPath();
-    ctx.rect(i * hotBarSize + canvas.width / 2 - (hotBarSize * (hotBarSpots / 2)), canvas.height - hotBarSize - 24, hotBarSize, hotBarSize);
-    if (colliding(mouse, {
-      x: i * hotBarSize + canvas.width / 2 - (hotBarSize * (hotBarSpots / 2)),
-      y: canvas.height - hotBarSize - 24,
-      w: hotBarSize,
-      h: hotBarSize,
-    })) {
+    ctx.rect(
+      i * hotBarSize + canvas.width / 2 - hotBarSize * (hotBarSpots / 2),
+      canvas.height - hotBarSize - 24,
+      hotBarSize,
+      hotBarSize,
+    );
+    if (
+      colliding(mouse, {
+        x: i * hotBarSize + canvas.width / 2 - hotBarSize * (hotBarSpots / 2),
+        y: canvas.height - hotBarSize - 24,
+        w: hotBarSize,
+        h: hotBarSize,
+      })
+    ) {
       if (mouse.click) {
         players[myId].spot = i + 1;
       }
@@ -715,7 +1001,21 @@ function animate() {
     ctx.closePath();
 
     if (players[myId].inventory[i] !== "") {
-      ctx.drawImage(items[players[myId].inventory[i]], i * hotBarSize + canvas.width / 2 - (hotBarSize * (hotBarSpots / 2)) + hotBarSize / 2 - items[players[myId].inventory[i]].width / 2, canvas.height - hotBarSize - 24 + hotBarSize / 2 - items[players[myId].inventory[i]].height / 2, items[players[myId].inventory[i]].width, items[players[myId].inventory[i]].height);
+      ctx.drawImage(
+        items[players[myId].inventory[i]],
+        i * hotBarSize +
+          canvas.width / 2 -
+          hotBarSize * (hotBarSpots / 2) +
+          hotBarSize / 2 -
+          items[players[myId].inventory[i]].width / 2,
+        canvas.height -
+          hotBarSize -
+          24 +
+          hotBarSize / 2 -
+          items[players[myId].inventory[i]].height / 2,
+        items[players[myId].inventory[i]].width,
+        items[players[myId].inventory[i]].height,
+      );
     }
   }
 
@@ -724,7 +1024,12 @@ function animate() {
 
   for (var i = 0; i < hotBarSpots; i++) {
     ctx.beginPath();
-    ctx.rect(i * hotBarSize + canvas.width / 2 - (hotBarSize * (hotBarSpots / 2)), canvas.height - hotBarSize - ctx.lineWidth - 21, hotBarSize, hotBarSize);
+    ctx.rect(
+      i * hotBarSize + canvas.width / 2 - hotBarSize * (hotBarSpots / 2),
+      canvas.height - hotBarSize - ctx.lineWidth - 21,
+      hotBarSize,
+      hotBarSize,
+    );
     ctx.strokeStyle = "darkgray";
     ctx.stroke();
     ctx.closePath();
@@ -733,7 +1038,14 @@ function animate() {
   ctx.lineWidth = 4;
 
   ctx.beginPath();
-  ctx.rect((players[myId].spot - 1) * hotBarSize + canvas.width / 2 - (hotBarSize * (hotBarSpots / 2)), canvas.height - hotBarSize - 24, hotBarSize, hotBarSize);
+  ctx.rect(
+    (players[myId].spot - 1) * hotBarSize +
+      canvas.width / 2 -
+      hotBarSize * (hotBarSpots / 2),
+    canvas.height - hotBarSize - 24,
+    hotBarSize,
+    hotBarSize,
+  );
   ctx.strokeStyle = "white";
   ctx.stroke();
   ctx.closePath();
@@ -754,7 +1066,7 @@ function animate() {
         y: players[Object.keys(players)[i]].y,
         scene: players[Object.keys(players)[i]].scene,
         inventory: players[Object.keys(players)[i]].inventory,
-      }
+      };
     }
     document.querySelector(".player-data").innerHTML = JSON.stringify(data);
   } else {
